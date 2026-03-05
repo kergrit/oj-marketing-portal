@@ -2087,11 +2087,11 @@ const ReportClaimFormView = ({ onBack, onPreviewImage, plans, initialReport = nu
 // --- Action Activity (KPI Summary) Views ---
 const KpiStatusBadge = ({ pass }) =>
   pass ? (
-    <span className="inline-flex items-center gap-1 font-black text-[10px] uppercase bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-sm">
+    <span className="inline-flex items-center justify-center gap-1 font-black text-[10px] uppercase bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-sm min-w-[5.5rem]">
       <CheckCircle2 size={12} /> PASS
     </span>
   ) : (
-    <span className="inline-flex items-center gap-1 font-black text-[10px] uppercase bg-rose-50 text-rose-700 border border-rose-200 px-2 py-0.5 rounded-sm">
+    <span className="inline-flex items-center justify-center gap-1 font-black text-[10px] uppercase bg-rose-50 text-rose-700 border border-rose-200 px-2 py-0.5 rounded-sm min-w-[5.5rem]">
       <X size={12} /> NO PASS
     </span>
   );
@@ -2233,12 +2233,12 @@ const ActionActivityDetailView = ({ activity, onBack, onDownloadExcel, dealerInf
         <p className="text-[11px] font-black uppercase tracking-wider text-slate-500 mb-3">สถานะรวม (Overall)</p>
         <div className="flex flex-col items-center gap-3">
           {overallPass ? (
-            <span className="inline-flex items-center gap-2 font-black text-lg uppercase bg-emerald-500 text-white border-2 border-emerald-600 px-6 py-3 rounded-sm shadow-lg">
+            <span className="inline-flex items-center justify-center gap-2 font-black text-lg uppercase bg-emerald-500 text-white border-2 border-emerald-600 px-6 py-3 rounded-sm shadow-lg min-w-[10rem]">
               <CheckCircle2 size={28} strokeWidth={2.5} />
               PASS
             </span>
           ) : (
-            <span className="inline-flex items-center gap-2 font-black text-lg uppercase bg-rose-500 text-white border-2 border-rose-600 px-6 py-3 rounded-sm shadow-lg">
+            <span className="inline-flex items-center justify-center gap-2 font-black text-lg uppercase bg-rose-500 text-white border-2 border-rose-600 px-6 py-3 rounded-sm shadow-lg min-w-[10rem]">
               <X size={28} strokeWidth={2.5} />
               NO PASS
             </span>
