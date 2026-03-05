@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import * as XLSX from 'xlsx';
 import {
   Plus,
   FileText,
@@ -40,6 +41,9 @@ import {
   Receipt,
   Tag,
   Bell,
+  Settings,
+  LogOut,
+  Download,
 } from 'lucide-react';
 
 // --- Constants & Mock Data ---
@@ -76,29 +80,29 @@ const IMAGE_URLS_REPORT = [
 const MOCK_PLANS = [
   {
     id: 1,
-    docNo: 'AGE20260304v1',
-    month: 'กรกฎาคม',
+    docNo: 'AGE20260115v1',
+    month: 'มกราคม',
     year: '2569',
     status: 'Approved',
     totalBudget: 450000,
     leads: 300,
     bookings: 20,
     onlineData: [
-      { activity: 'Post on Facebook', otherDetail: 'โพสต์โปรโมท OMODA C5 EV', date: '2026-07-05', location: 'Facebook Page' },
-      { activity: 'Livestream', otherDetail: 'ไลฟ์สดแนะนำฟีเจอร์รถ OMODA C5 EV', date: '2026-07-12', location: 'TikTok / FB' },
-      { activity: 'Post on Facebook', otherDetail: 'ยิงโฆษณาแคมเปญหลัก OMODA', date: '2026-07-19', location: 'Meta Ads' },
-      { activity: 'Post on TikTok', otherDetail: 'รีวิวสั้นๆ 15 วินาที OMODA C5', date: '2026-07-26', location: 'TikTok' },
+      { activity: 'Post on Facebook', otherDetail: 'โพสต์โปรโมท OMODA C5 EV', date: '2026-01-05', location: 'Facebook Page' },
+      { activity: 'Livestream', otherDetail: 'ไลฟ์สดแนะนำฟีเจอร์รถ OMODA C5 EV', date: '2026-01-12', location: 'TikTok / FB' },
+      { activity: 'Post on Facebook', otherDetail: 'ยิงโฆษณาแคมเปญหลัก OMODA', date: '2026-01-19', location: 'Meta Ads' },
+      { activity: 'Post on TikTok', otherDetail: 'รีวิวสั้นๆ 15 วินาที OMODA C5', date: '2026-01-26', location: 'TikTok' },
     ],
     offlineData: [
-      { activity: 'Roadshow', otherDetail: 'จัดแสดงที่ห้างสรรพสินค้าชั้นนำ', date: '2026-07-01', location: 'Central World' },
-      { activity: 'Showroom event', otherDetail: 'งานเปิดตัว OMODA C5 EV รุ่นพิเศษ', date: '2026-07-15', location: 'Showroom Ram' },
-      { activity: 'OJ Club', otherDetail: 'กิจกรรมสมาชิกคลับ OMODA & JAECOO', date: '2026-07-20', location: 'Showroom Ram' },
-      { activity: 'Other', otherDetail: 'กิจกรรมแจกรางวัลผู้จอง OMODA', date: '2026-07-31', location: 'Showroom Ram' },
+      { activity: 'Roadshow', otherDetail: 'จัดแสดงที่ห้างสรรพสินค้าชั้นนำ', date: '2026-01-01', location: 'Central World' },
+      { activity: 'Showroom event', otherDetail: 'งานเปิดตัว OMODA C5 EV รุ่นพิเศษ', date: '2026-01-15', location: 'Showroom Ram' },
+      { activity: 'OJ Club', otherDetail: 'กิจกรรมสมาชิกคลับ OMODA & JAECOO', date: '2026-01-20', location: 'Showroom Ram' },
+      { activity: 'Other', otherDetail: 'กิจกรรมแจกรางวัลผู้จอง OMODA', date: '2026-01-31', location: 'Showroom Ram' },
     ],
     onlineBudget: 250000,
     offlineBudget: 200000,
     approvalData: {
-      date: '2026-03-04',
+      date: '2026-01-10',
       time: '10:30',
       name: 'ธนาวุฒิ อนุมัติไว (Admin)',
       email: 'thanawut.a@omodajaecoo.co.th',
@@ -107,22 +111,53 @@ const MOCK_PLANS = [
   },
   {
     id: 2,
+    docNo: 'AGE20260201v1',
+    month: 'กุมภาพันธ์',
+    year: '2569',
+    status: 'Approved',
+    totalBudget: 420000,
+    leads: 280,
+    bookings: 18,
+    onlineData: [
+      { activity: 'Post on Facebook', otherDetail: 'แคมเปญวาเลนไทน์ OMODA & JAECOO', date: '2026-02-05', location: 'Facebook Page' },
+      { activity: 'Post on TikTok', otherDetail: 'คลิปทดลองขับ JAECOO 5 EV', date: '2026-02-14', location: 'TikTok' },
+      { activity: 'Livestream', otherDetail: 'ไลฟ์สรุปผลงานเดือนมกราคม', date: '2026-02-20', location: 'TikTok / FB' },
+      { activity: 'Post on Facebook', otherDetail: 'โปรโมชั่นปลายเดือนกุมภาพันธ์', date: '2026-02-25', location: 'Meta Ads' },
+    ],
+    offlineData: [
+      { activity: 'Showroom event', otherDetail: 'งานวาเลนไทน์ที่โชว์รูม', date: '2026-02-07', location: 'Showroom Ram' },
+      { activity: 'Roadshow', otherDetail: 'จัดแสดงที่ศูนย์การค้าพระราม 9', date: '2026-02-15', location: 'The Street Ratchada' },
+      { activity: 'OJ Club', otherDetail: 'พบปะสมาชิกคลับ', date: '2026-02-22', location: 'Showroom Ram' },
+      { activity: 'Other', otherDetail: 'กิจกรรมส่งท้ายเดือน', date: '2026-02-28', location: 'Showroom Ram' },
+    ],
+    onlineBudget: 220000,
+    offlineBudget: 200000,
+    approvalData: {
+      date: '2026-02-03',
+      time: '14:00',
+      name: 'ธนาวุฒิ อนุมัติไว (Admin)',
+      email: 'thanawut.a@omodajaecoo.co.th',
+      phone: '02-111-2233',
+    },
+  },
+  {
+    id: 3,
     docNo: 'AGE20260304v2',
-    month: 'สิงหาคม',
+    month: 'มีนาคม',
     year: '2569',
     status: 'Pending',
     totalBudget: 380000,
     leads: 250,
     bookings: 15,
     onlineData: [
-      { activity: 'Post on TikTok', otherDetail: 'ทำคอนเทนต์เปิดตัว JAECOO 6 EV', date: '2026-08-10', location: 'Social Media' },
-      { activity: 'Post on Facebook', otherDetail: 'โปรโมทโปรโมชั่น JAECOO ประจำเดือน', date: '2026-08-15', location: 'Facebook' },
+      { activity: 'Post on TikTok', otherDetail: 'ทำคอนเทนต์เปิดตัว JAECOO 6 EV', date: '2026-03-10', location: 'Social Media' },
+      { activity: 'Post on Facebook', otherDetail: 'โปรโมทโปรโมชั่น JAECOO ประจำเดือน', date: '2026-03-15', location: 'Facebook' },
       { activity: '', otherDetail: '', date: '', location: '' },
       { activity: '', otherDetail: '', date: '', location: '' },
     ],
     offlineData: [
-      { activity: 'Showroom event', otherDetail: 'คาราวานทดลองขับ JAECOO 6 EV รอบเมือง', date: '2026-08-05', location: 'ถนนสุขุมวิท' },
-      { activity: 'Showroom event', otherDetail: 'ธีมแคมเปญฤดูฝน JAECOO', date: '2026-08-01', location: 'Showroom' },
+      { activity: 'Showroom event', otherDetail: 'คาราวานทดลองขับ JAECOO 6 EV รอบเมือง', date: '2026-03-05', location: 'ถนนสุขุมวิท' },
+      { activity: 'Showroom event', otherDetail: 'ธีมแคมเปญฤดูฝน JAECOO', date: '2026-03-01', location: 'Showroom' },
       { activity: '', otherDetail: '', date: '', location: '' },
       { activity: '', otherDetail: '', date: '', location: '' },
     ],
@@ -130,9 +165,9 @@ const MOCK_PLANS = [
     offlineBudget: 180000,
   },
   {
-    id: 3,
-    docNo: 'AGE20260304v3',
-    month: 'กันยายน',
+    id: 4,
+    docNo: 'AGE20260401v3',
+    month: 'เมษายน',
     year: '2569',
     status: 'Draft',
     totalBudget: 150000,
@@ -154,7 +189,7 @@ const MOCK_CONTENT_REQUESTS = [
     id: 101,
     title: 'สื่อโฆษณา Facebook OMODA C5 EV',
     usage: 'โปรโมทแคมเปญเดือนมีนาคม',
-    date: '2026-03-04',
+    date: '2025-03-04',
     time: '09:15',
     status: 'Pending',
     files: [{ name: 'omoda_c5_front.jpg', url: IMAGE_URLS[0] }],
@@ -163,12 +198,12 @@ const MOCK_CONTENT_REQUESTS = [
     id: 102,
     title: 'ภาพกราฟิกงาน Roadshow',
     usage: 'ภาพบรรยากาศงานโชว์รูม',
-    date: '2026-03-01',
+    date: '2025-03-01',
     time: '08:00',
     status: 'Approved',
     files: [{ name: 'jaecoo_event_1.jpg', url: IMAGE_URLS[2] }],
     approvalData: {
-      date: '2026-03-02',
+      date: '2025-03-02',
       time: '14:20',
       name: 'ศิริมา อนุมัติเก่ง (Marketing Admin)',
       email: 'sirima.k@omodajaecoo.co.th',
@@ -179,14 +214,14 @@ const MOCK_CONTENT_REQUESTS = [
     id: 103,
     title: 'แคมเปญ JAECOO 7 PHEV',
     usage: 'แจ้งโปรโมชั่นประจำไตรมาส',
-    date: '2026-02-25',
+    date: '2025-02-25',
     time: '11:45',
     status: 'Rejected',
     files: [{ name: 'jaecoo_7_profile.png', url: IMAGE_URLS[4] }],
     rejectReason:
       'องค์ประกอบของภาพไม่เป็นไปตาม Corporate Identity (CI) ล่าสุด กรุณาปรับปรุงโทนสีและ Layout ให้ทันสมัยขึ้น',
     rejectData: {
-      date: '2026-02-26',
+      date: '2025-02-26',
       name: 'ระวีวรรณ ตรวจละเอียด (Content QC)',
       email: 'raweewan.t@omodajaecoo.co.th',
       phone: '02-555-4433',
@@ -196,7 +231,7 @@ const MOCK_CONTENT_REQUESTS = [
     id: 104,
     title: 'ชุดภาพโปรโมท JAECOO 6 (ร่าง)',
     usage: 'เตรียมสื่อสำหรับเปิดสาขาใหม่ไตรมาส 3',
-    date: '2026-03-04',
+    date: '2025-03-04',
     status: 'Draft',
     files: [
       { name: 'jaecoo_6_draft.jpg', url: IMAGE_URLS[5] },
@@ -207,19 +242,21 @@ const MOCK_CONTENT_REQUESTS = [
 
 const CLAIM_TYPE_OPTIONS = ['Space rental', 'POS production', 'Customer giveaway'];
 
+const defaultBookingRow = () => ({ leadsOffline: 0, testDrive: 0, bookingPlus2wd: 0, bookingUltimate4wd: 0, bookingOther: 0 });
+
 const MOCK_REPORT_CLAIMS = [
   {
     id: 201,
     docNo: 'RPT-AGE-2026-001',
-    planDocNo: 'AGE20260304v1',
-    month: 'กรกฎาคม',
+    planDocNo: 'AGE20260115v1',
+    month: 'มกราคม',
     year: '2569',
     status: 'Approved',
-    date: '2026-07-31',
+    date: '2026-01-31',
     onlineActivityType: 'Post on Facebook',
     onlineRows: [
-      { url: 'https://facebook.com/post/xxx', impression: '15000', leads: '45' },
-      { url: 'https://meta.business/ads/yyy', impression: '8200', leads: '22' },
+      { url: 'https://facebook.com/post/xxx', impression: '45000', leads: '120' },
+      { url: 'https://meta.business/ads/yyy', impression: '28000', leads: '95' },
     ],
     offlineActivityType: 'Roadshow',
     offlineFiles: [
@@ -234,8 +271,14 @@ const MOCK_REPORT_CLAIMS = [
       { activityType: 'offline', claimType: 'Space rental', detail: 'ค่าเช่าพื้นที่ Central World', price: '85000', receiptFile: { name: 'receipt_1.jpg', url: IMAGE_URLS_REPORT[0] } },
       { activityType: 'offline', claimType: 'Customer giveaway', detail: 'ของแจกผู้เข้าร่วมงาน', price: '40000', receiptFile: { name: 'receipt_2.jpg', url: IMAGE_URLS_REPORT[1] } },
     ],
+    bookingResult: [
+      { leadsOffline: 85, testDrive: 12, bookingPlus2wd: 4, bookingUltimate4wd: 3, bookingOther: 2 },
+      { leadsOffline: 72, testDrive: 8, bookingPlus2wd: 2, bookingUltimate4wd: 1, bookingOther: 0 },
+      { leadsOffline: 68, testDrive: 6, bookingPlus2wd: 1, bookingUltimate4wd: 2, bookingOther: 1 },
+      { leadsOffline: 65, testDrive: 5, bookingPlus2wd: 2, bookingUltimate4wd: 0, bookingOther: 2 },
+    ],
     approvalData: {
-      date: '2026-08-05',
+      date: '2026-02-05',
       time: '16:00',
       name: 'ธนาวุฒิ อนุมัติไว (Admin)',
       email: 'thanawut.a@omodajaecoo.co.th',
@@ -245,25 +288,48 @@ const MOCK_REPORT_CLAIMS = [
   {
     id: 202,
     docNo: 'RPT-AGE-2026-002',
-    planDocNo: 'AGE20260304v2',
-    month: 'สิงหาคม',
+    planDocNo: 'AGE20260201v1',
+    month: 'กุมภาพันธ์',
     year: '2569',
-    status: 'Pending',
-    date: '2026-08-28',
+    status: 'Approved',
+    date: '2026-02-28',
     time: '13:30',
     onlineActivityType: 'Post on TikTok',
-    onlineRows: [{ url: 'https://tiktok.com/@xxx', impression: '5000', leads: '12' }],
-    offlineActivityType: '',
-    offlineFiles: [],
-    onlineActualBudget: 0,
-    offlineActualBudget: 0,
-    claimRows: [{ activityType: 'online', claimType: '', detail: '', price: '', receiptFile: null }],
+    onlineRows: [
+      { url: 'https://tiktok.com/@xxx', impression: '5000', leads: '12' },
+      { url: 'https://tiktok.com/@yyy', impression: '3200', leads: '8' },
+    ],
+    offlineActivityType: 'Event at Mall',
+    offlineFiles: [
+      { name: 'event_mall_1.jpg', url: IMAGE_URLS_REPORT[0] },
+      { name: 'event_mall_2.jpg', url: IMAGE_URLS_REPORT[1] },
+    ],
+    onlineActualBudget: 45000,
+    offlineActualBudget: 120000,
+    claimRows: [
+      { activityType: 'offline', claimType: 'Space rental', detail: 'ค่าเช่าพื้นที่ศูนย์การค้า', price: '75000', receiptFile: { name: 'receipt_mall.jpg', url: IMAGE_URLS_REPORT[2] } },
+      { activityType: 'offline', claimType: 'POS production', detail: 'บัตร stand พร้อมของแจก', price: '25000', receiptFile: { name: 'receipt_pos.jpg', url: IMAGE_URLS_REPORT[3] } },
+      { activityType: 'online', claimType: '', detail: '', price: '', receiptFile: null },
+    ],
+    bookingResult: [
+      { leadsOffline: 14, testDrive: 6, bookingPlus2wd: 1, bookingUltimate4wd: 1, bookingOther: 0 },
+      { leadsOffline: 10, testDrive: 4, bookingPlus2wd: 2, bookingUltimate4wd: 0, bookingOther: 0 },
+      { leadsOffline: 8, testDrive: 3, bookingPlus2wd: 0, bookingUltimate4wd: 1, bookingOther: 1 },
+      { leadsOffline: 6, testDrive: 2, bookingPlus2wd: 1, bookingUltimate4wd: 0, bookingOther: 0 },
+    ],
+    approvalData: {
+      date: '2026-03-05',
+      time: '11:00',
+      name: 'ธนาวุฒิ อนุมัติไว (Admin)',
+      email: 'thanawut.a@omodajaecoo.co.th',
+      phone: '02-111-2233',
+    },
   },
   {
     id: 203,
     docNo: 'RPT-AGE-2026-003',
     planDocNo: null,
-    month: 'กันยายน',
+    month: 'มีนาคม',
     year: '2569',
     status: 'Draft',
     date: '',
@@ -274,8 +340,54 @@ const MOCK_REPORT_CLAIMS = [
     onlineActualBudget: 0,
     offlineActualBudget: 0,
     claimRows: [{ activityType: 'online', claimType: '', detail: '', price: '', receiptFile: null }],
+    bookingResult: VEHICLE_MODELS.map(() => defaultBookingRow()),
   },
 ];
+
+// --- Action Activity (KPI Plan vs Report) ---
+const getReportTotals = (report) => {
+  if (!report) return { leadsActual: 0, bookingActual: 0 };
+  const onlineLeads = (report.onlineRows || []).reduce((s, r) => s + (Number(r.leads) || 0), 0);
+  const bookingResult = report.bookingResult || [];
+  const leadsOffline = bookingResult.reduce((s, r) => s + (Number(r.leadsOffline) || 0), 0);
+  const leadsActual = onlineLeads + leadsOffline;
+  const bookingActual = bookingResult.reduce(
+    (s, r) =>
+      s +
+      (Number(r.bookingPlus2wd) || 0) +
+      (Number(r.bookingUltimate4wd) || 0) +
+      (Number(r.bookingOther) || 0),
+    0
+  );
+  return { leadsActual, bookingActual };
+};
+
+const buildActivityList = (plans, reports) => {
+  const submitted = (reports || []).filter((r) => r.planDocNo && (r.status === 'Approved' || r.status === 'Pending'));
+  return submitted
+    .map((report) => {
+      const plan = (plans || []).find((p) => p.docNo === report.planDocNo);
+      if (!plan) return null;
+      const { leadsActual, bookingActual } = getReportTotals(report);
+      const leadsTarget = Number(plan.leads) || 0;
+      const bookingTarget = Number(plan.bookings) || 0;
+      const leadPass = leadsActual >= leadsTarget;
+      const bookingPass = bookingActual >= bookingTarget;
+      const overallPass = leadPass && bookingPass;
+      return {
+        plan,
+        report,
+        leadsTarget,
+        leadsActual,
+        bookingTarget,
+        bookingActual,
+        leadPass,
+        bookingPass,
+        overallPass,
+      };
+    })
+    .filter(Boolean);
+};
 
 // --- Shared Components ---
 const StatusBadge = ({ status, large = false }) => {
@@ -287,7 +399,7 @@ const StatusBadge = ({ status, large = false }) => {
   };
   return (
     <span
-      className={`inline-flex items-center justify-center font-bold border uppercase whitespace-nowrap ${large ? 'w-[5.5rem] py-1 text-xs' : 'w-[4.25rem] py-0.5 text-[9px]'} ${styles[status] || 'bg-slate-50'}`}
+      className={`inline-flex items-center justify-center font-bold border uppercase whitespace-nowrap ${large ? 'min-w-[6.25rem] px-2 py-1 text-xs' : 'min-w-[5.5rem] px-2 py-0.5 text-[9px]'} ${styles[status] || 'bg-slate-50'}`}
     >
       {status === 'Pending' && <Clock size={large ? 14 : 10} className="mr-1" />}
       {status === 'Approved' && <CheckCircle2 size={large ? 14 : 10} className="mr-1" />}
@@ -637,6 +749,7 @@ const MonthlyPlanFormView = ({ onBack, initialPlan = null }) => {
               onChange={(e) => setSelectedYear(e.target.value)}
               className="bg-white border-2 border-slate-400 text-xs font-bold py-1 px-2 outline-none focus:border-indigo-500 disabled:bg-slate-100 rounded-sm"
             >
+              <option value="2568">2568</option>
               <option value="2569">2569</option>
               <option value="2570">2570</option>
             </select>
@@ -779,11 +892,52 @@ const MonthlyPlanFormView = ({ onBack, initialPlan = null }) => {
   );
 };
 
+const readFileAsDataURL = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+
 const ContentFormView = ({ onBack, onPreviewImage, initialReq = null }) => {
   const isEditMode = !!initialReq;
   const isDraft = initialReq?.status === 'Draft';
   const isReadOnly = initialReq && initialReq.status !== 'Draft';
   const isRejected = initialReq?.status === 'Rejected';
+
+  const [uploadedFiles, setUploadedFiles] = useState(initialReq?.files ? [...initialReq.files] : []);
+  const fileInputRef = useRef(null);
+
+  const acceptTypes = 'image/png,image/jpeg,image/jpg';
+  const handleFiles = async (fileList) => {
+    const files = Array.from(fileList || []).filter(
+      (f) => f.type === 'image/png' || f.type === 'image/jpeg' || f.type === 'image/jpg'
+    );
+    const newEntries = await Promise.all(
+      files.map(async (f) => ({ name: f.name, url: await readFileAsDataURL(f) }))
+    );
+    setUploadedFiles((p) => [...p, ...newEntries]);
+  };
+
+  const onUploadZoneClick = () => fileInputRef.current?.click();
+  const onFileInputChange = (e) => {
+    handleFiles(e.target.files);
+    e.target.value = '';
+  };
+  const onUploadZoneDrop = (e) => {
+    e.preventDefault();
+    e.currentTarget.classList.remove('border-indigo-500', 'bg-indigo-50');
+    handleFiles(e.dataTransfer?.files);
+  };
+  const onUploadZoneDragOver = (e) => {
+    e.preventDefault();
+    e.currentTarget.classList.add('border-indigo-500', 'bg-indigo-50');
+  };
+  const onUploadZoneDragLeave = (e) => {
+    e.preventDefault();
+    e.currentTarget.classList.remove('border-indigo-500', 'bg-indigo-50');
+  };
 
   return (
     <div className="max-w-7xl mx-auto space-y-4 pb-10 animate-in slide-in-from-bottom-2 duration-300">
@@ -918,22 +1072,33 @@ const ContentFormView = ({ onBack, onPreviewImage, initialReq = null }) => {
           <h3 className="text-[11px] uppercase tracking-tight font-sans">จัดการสื่อรูปภาพ (PNG/JPG ONLY)</h3>
         </div>
         <div className="p-5 space-y-4 font-sans font-black">
-          {initialReq?.files && initialReq.files.length > 0 && (
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept={acceptTypes}
+            multiple
+            className="hidden"
+            onChange={onFileInputChange}
+          />
+          {uploadedFiles.length > 0 && (
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
-              {initialReq.files.map((f, i) => (
+              {uploadedFiles.map((f, i) => (
                 <div key={i} className="border border-slate-200 group/card relative bg-white rounded-sm overflow-hidden">
                   <div className="relative aspect-video overflow-hidden">
                     <img src={f.url} alt={f.name} className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center gap-4 opacity-0 group-hover/card:opacity-100 transition-opacity duration-200">
                       <button
+                        type="button"
                         onClick={() => onPreviewImage(f)}
                         className="p-2 bg-white/90 hover:bg-white rounded-full text-indigo-600 shadow-lg transition-all hover:scale-110"
                         title="View"
                       >
                         <Eye size={18} />
                       </button>
-                      {isDraft && (
+                      {(!initialReq || isDraft) && (
                         <button
+                          type="button"
+                          onClick={() => setUploadedFiles((p) => p.filter((_, ix) => ix !== i))}
                           className="p-2 bg-white/90 hover:bg-white rounded-full text-rose-600 shadow-lg transition-all hover:scale-110"
                           title="Delete"
                         >
@@ -951,7 +1116,15 @@ const ContentFormView = ({ onBack, onPreviewImage, initialReq = null }) => {
           )}
 
           {(!initialReq || isDraft) && (
-            <div className="border-2 border-dashed border-slate-400 bg-slate-50 p-8 flex flex-col items-center justify-center text-slate-400 hover:bg-indigo-50 hover:border-indigo-300 cursor-pointer transition-all rounded-sm font-sans font-black">
+            <div
+              role="button"
+              tabIndex={0}
+              onClick={onUploadZoneClick}
+              onDrop={onUploadZoneDrop}
+              onDragOver={onUploadZoneDragOver}
+              onDragLeave={onUploadZoneDragLeave}
+              className="border-2 border-dashed border-slate-400 bg-slate-50 p-8 flex flex-col items-center justify-center text-slate-400 hover:bg-indigo-50 hover:border-indigo-300 cursor-pointer transition-all rounded-sm font-sans font-black"
+            >
               <ImageIcon size={32} className="mb-2 opacity-50 font-sans" />
               <p className="text-xs font-bold uppercase tracking-tight">Drag & Drop Image Files or Click to Upload</p>
               <p className="text-[10px] mt-1 text-rose-500 font-black uppercase">เฉพาะไฟล์ .png และ .jpg เท่านั้น</p>
@@ -1164,6 +1337,9 @@ const ReportClaimFormView = ({ onBack, onPreviewImage, plans, initialReport = nu
   );
   const [offlineActivityType, setOfflineActivityType] = useState(initialReport?.offlineActivityType || '');
   const [offlineFiles, setOfflineFiles] = useState(initialReport?.offlineFiles || []);
+  const [uploadingForClaimRow, setUploadingForClaimRow] = useState(null);
+  const offlineFileInputRef = useRef(null);
+  const receiptFileInputRef = useRef(null);
   const [actualBudgetUsed, setActualBudgetUsed] = useState(
     initialReport
       ? (Number(initialReport.onlineActualBudget) || 0) + (Number(initialReport.offlineActualBudget) || 0)
@@ -1171,6 +1347,30 @@ const ReportClaimFormView = ({ onBack, onPreviewImage, plans, initialReport = nu
   );
   const [claimRows, setClaimRows] = useState(
     initialReport?.claimRows || [{ activityType: 'online', claimType: '', detail: '', price: '', receiptFile: null }]
+  );
+
+  const defaultBookingRow = () => ({ leadsOffline: 0, testDrive: 0, bookingPlus2wd: 0, bookingUltimate4wd: 0, bookingOther: 0 });
+  const [bookingResult, setBookingResult] = useState(
+    initialReport?.bookingResult || VEHICLE_MODELS.map(() => defaultBookingRow())
+  );
+
+  const updateBookingResult = (modelIdx, field, value) => {
+    setBookingResult((p) => {
+      const next = [...p];
+      next[modelIdx] = { ...next[modelIdx], [field]: Number(value) || 0 };
+      return next;
+    });
+  };
+
+  const bookingTotals = bookingResult.reduce(
+    (acc, row) => ({
+      leadsOffline: acc.leadsOffline + (row.leadsOffline || 0),
+      testDrive: acc.testDrive + (row.testDrive || 0),
+      bookingPlus2wd: acc.bookingPlus2wd + (row.bookingPlus2wd || 0),
+      bookingUltimate4wd: acc.bookingUltimate4wd + (row.bookingUltimate4wd || 0),
+      bookingOther: acc.bookingOther + (row.bookingOther || 0),
+    }),
+    { leadsOffline: 0, testDrive: 0, bookingPlus2wd: 0, bookingUltimate4wd: 0, bookingOther: 0 }
   );
 
   const addOnlineRow = () => {
@@ -1208,6 +1408,69 @@ const ReportClaimFormView = ({ onBack, onPreviewImage, plans, initialReport = nu
   const totalClaimAmount = claimRows.reduce((s, r) => s + (Number(r.price) || 0), 0);
 
   const approvedPlans = plans.filter((p) => p.status === 'Approved');
+
+  const handleOfflineFiles = async (fileList) => {
+    const files = Array.from(fileList || []).filter(
+      (f) => f.type === 'image/png' || f.type === 'image/jpeg' || f.type === 'image/jpg'
+    );
+    const newEntries = await Promise.all(
+      files.map(async (f) => ({ name: f.name, url: await readFileAsDataURL(f) }))
+    );
+    setOfflineFiles((p) => [...p, ...newEntries]);
+  };
+  const onOfflineUploadClick = () => offlineFileInputRef.current?.click();
+  const onOfflineFileChange = (e) => {
+    handleOfflineFiles(e.target.files);
+    e.target.value = '';
+  };
+  const onOfflineDrop = (e) => {
+    e.preventDefault();
+    e.currentTarget.classList.remove('border-indigo-500', 'bg-indigo-50');
+    handleOfflineFiles(e.dataTransfer?.files);
+  };
+  const onOfflineDragOver = (e) => {
+    e.preventDefault();
+    e.currentTarget.classList.add('border-indigo-500', 'bg-indigo-50');
+  };
+  const onOfflineDragLeave = (e) => {
+    e.preventDefault();
+    e.currentTarget.classList.remove('border-indigo-500', 'bg-indigo-50');
+  };
+
+  const onReceiptUploadClick = (idx) => {
+    setUploadingForClaimRow(idx);
+    receiptFileInputRef.current?.click();
+  };
+  const onReceiptFileChange = async (e) => {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (uploadingForClaimRow === null || !file) {
+      setUploadingForClaimRow(null);
+      return;
+    }
+    if (file.type !== 'image/png' && file.type !== 'image/jpeg' && file.type !== 'image/jpg') {
+      setUploadingForClaimRow(null);
+      return;
+    }
+    const url = await readFileAsDataURL(file);
+    updateClaimRow(uploadingForClaimRow, 'receiptFile', { name: file.name, url });
+    setUploadingForClaimRow(null);
+  };
+  const onReceiptDrop = (e, idx) => {
+    e.preventDefault();
+    e.currentTarget.classList.remove('border-indigo-500', 'bg-indigo-50');
+    const file = e.dataTransfer?.files?.[0];
+    if (!file || (file.type !== 'image/png' && file.type !== 'image/jpeg' && file.type !== 'image/jpg')) return;
+    readFileAsDataURL(file).then((url) => updateClaimRow(idx, 'receiptFile', { name: file.name, url }));
+  };
+  const onReceiptDragOver = (e) => {
+    e.preventDefault();
+    e.currentTarget.classList.add('border-indigo-500', 'bg-indigo-50');
+  };
+  const onReceiptDragLeave = (e) => {
+    e.preventDefault();
+    e.currentTarget.classList.remove('border-indigo-500', 'bg-indigo-50');
+  };
 
   return (
     <div className="max-w-7xl mx-auto space-y-4 pb-10 animate-in slide-in-from-bottom-2 duration-300">
@@ -1419,6 +1682,14 @@ const ReportClaimFormView = ({ onBack, onPreviewImage, plans, initialReport = nu
           </div>
           <div className="space-y-2">
             <label className="text-[11px] font-black text-slate-500 uppercase">รูปกิจกรรม (PNG/JPG)</label>
+            <input
+              ref={offlineFileInputRef}
+              type="file"
+              accept="image/png,image/jpeg,image/jpg"
+              multiple
+              className="hidden"
+              onChange={onOfflineFileChange}
+            />
             {offlineFiles.length > 0 && (
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
                 {offlineFiles.map((f, i) => (
@@ -1454,13 +1725,114 @@ const ReportClaimFormView = ({ onBack, onPreviewImage, plans, initialReport = nu
               </div>
             )}
             {!isReadOnly && (
-              <div className="border-2 border-dashed border-slate-400 bg-slate-50 p-8 flex flex-col items-center justify-center text-slate-400 hover:bg-indigo-50 hover:border-indigo-300 cursor-pointer transition-all rounded-sm font-sans font-black">
+              <div
+                role="button"
+                tabIndex={0}
+                onClick={onOfflineUploadClick}
+                onDrop={onOfflineDrop}
+                onDragOver={onOfflineDragOver}
+                onDragLeave={onOfflineDragLeave}
+                className="border-2 border-dashed border-slate-400 bg-slate-50 p-8 flex flex-col items-center justify-center text-slate-400 hover:bg-indigo-50 hover:border-indigo-300 cursor-pointer transition-all rounded-sm font-sans font-black"
+              >
                 <ImageIcon size={32} className="mb-2 opacity-50" />
                 <p className="text-xs font-bold uppercase tracking-tight">Drag & Drop หรือ Click เพื่อ Upload รูปกิจกรรม</p>
                 <p className="text-[10px] mt-1 text-rose-500 font-black uppercase">เฉพาะไฟล์ .png และ .jpg</p>
               </div>
             )}
           </div>
+        </div>
+      </section>
+
+      <section className="bg-white border border-slate-300 overflow-hidden shadow-sm rounded-sm font-sans font-black">
+        <div className="bg-indigo-700 px-5 py-2 flex items-center gap-2 text-white font-black font-sans">
+          <BarChart3 size={16} />
+          <h3 className="text-[11px] uppercase tracking-tight">Booking Result</h3>
+        </div>
+        <p className="px-5 pt-2 text-[10px] font-bold text-slate-500 uppercase">Please complete number all the boxes</p>
+        <div className="p-5 overflow-x-auto">
+          <table className="w-full border border-slate-800 text-sm font-sans font-black">
+            <thead>
+              <tr className="bg-slate-100 border-b border-slate-300">
+                <th className="border border-slate-300 px-3 py-2 text-left text-[10px] font-black uppercase text-slate-600 min-w-[11rem] w-[11rem]">Model</th>
+                <th className="border border-slate-300 px-3 py-2 text-center text-[10px] font-black uppercase text-slate-600">No of Leads (off-line)</th>
+                <th className="border border-slate-300 px-3 py-2 text-center text-[10px] font-black uppercase text-slate-600 bg-slate-200">No of Test drive</th>
+                <th colSpan={3} className="border border-slate-300 px-3 py-2 text-center text-[10px] font-black uppercase text-slate-600">No of Booking</th>
+              </tr>
+              <tr className="bg-slate-50 border-b border-slate-300">
+                <th className="border border-slate-300 px-3 py-1 min-w-[11rem] w-[11rem]"></th>
+                <th className="border border-slate-300 px-3 py-1"></th>
+                <th className="border border-slate-300 px-3 py-1 bg-slate-200"></th>
+                <th className="border border-slate-300 px-3 py-1 text-[10px] font-black uppercase text-slate-500">Plus/2WD</th>
+                <th className="border border-slate-300 px-3 py-1 text-[10px] font-black uppercase text-slate-500">Utimate/4WD</th>
+                <th className="border border-slate-300 px-3 py-1 text-[10px] font-black uppercase text-slate-500">other</th>
+              </tr>
+            </thead>
+            <tbody>
+              {VEHICLE_MODELS.map((model, idx) => (
+                <tr key={model} className="border-b border-slate-200">
+                  <td className="border border-slate-300 px-3 py-1.5 font-bold text-slate-800 text-xs min-w-[11rem] w-[11rem] whitespace-nowrap">{model}</td>
+                  <td className="border border-slate-300 px-2 py-1.5">
+                    <input
+                      disabled={isReadOnly}
+                      type="number"
+                      min={0}
+                      value={bookingResult[idx]?.leadsOffline ?? ''}
+                      onChange={(e) => updateBookingResult(idx, 'leadsOffline', e.target.value)}
+                      className="w-full min-w-[4rem] border border-slate-400 py-1.5 px-2 text-xs font-bold text-center focus:border-indigo-500 outline-none disabled:bg-slate-100"
+                    />
+                  </td>
+                  <td className="border border-slate-300 px-2 py-1.5 bg-slate-100">
+                    <input
+                      disabled={isReadOnly}
+                      type="number"
+                      min={0}
+                      value={bookingResult[idx]?.testDrive ?? ''}
+                      onChange={(e) => updateBookingResult(idx, 'testDrive', e.target.value)}
+                      className="w-full min-w-[4rem] border border-slate-300 bg-slate-50 py-1.5 px-2 text-xs font-bold text-center focus:border-indigo-500 outline-none disabled:bg-slate-100"
+                    />
+                  </td>
+                  <td className="border border-slate-300 px-2 py-1.5">
+                    <input
+                      disabled={isReadOnly}
+                      type="number"
+                      min={0}
+                      value={bookingResult[idx]?.bookingPlus2wd ?? ''}
+                      onChange={(e) => updateBookingResult(idx, 'bookingPlus2wd', e.target.value)}
+                      className="w-full min-w-[4rem] border border-slate-400 py-1.5 px-2 text-xs font-bold text-center focus:border-indigo-500 outline-none disabled:bg-slate-100"
+                    />
+                  </td>
+                  <td className="border border-slate-300 px-2 py-1.5">
+                    <input
+                      disabled={isReadOnly}
+                      type="number"
+                      min={0}
+                      value={bookingResult[idx]?.bookingUltimate4wd ?? ''}
+                      onChange={(e) => updateBookingResult(idx, 'bookingUltimate4wd', e.target.value)}
+                      className="w-full min-w-[4rem] border border-slate-400 py-1.5 px-2 text-xs font-bold text-center focus:border-indigo-500 outline-none disabled:bg-slate-100"
+                    />
+                  </td>
+                  <td className="border border-slate-300 px-2 py-1.5">
+                    <input
+                      disabled={isReadOnly}
+                      type="number"
+                      min={0}
+                      value={bookingResult[idx]?.bookingOther ?? ''}
+                      onChange={(e) => updateBookingResult(idx, 'bookingOther', e.target.value)}
+                      className="w-full min-w-[4rem] border border-slate-400 py-1.5 px-2 text-xs font-bold text-center focus:border-indigo-500 outline-none disabled:bg-slate-100"
+                    />
+                  </td>
+                </tr>
+              ))}
+              <tr className="bg-slate-100 border-t-2 border-slate-400 font-black">
+                <td className="border border-slate-300 px-3 py-2 text-xs uppercase text-slate-700 min-w-[11rem] w-[11rem]">Total</td>
+                <td className="border border-slate-300 px-3 py-2 text-center text-xs font-black tabular-nums">{bookingTotals.leadsOffline}</td>
+                <td className="border border-slate-300 px-3 py-2 text-center text-xs font-black tabular-nums bg-slate-200">{bookingTotals.testDrive}</td>
+                <td className="border border-slate-300 px-3 py-2 text-center text-xs font-black tabular-nums">{bookingTotals.bookingPlus2wd}</td>
+                <td className="border border-slate-300 px-3 py-2 text-center text-xs font-black tabular-nums">{bookingTotals.bookingUltimate4wd}</td>
+                <td className="border border-slate-300 px-3 py-2 text-center text-xs font-black tabular-nums">{bookingTotals.bookingOther}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
@@ -1524,10 +1896,10 @@ const ReportClaimFormView = ({ onBack, onPreviewImage, plans, initialReport = nu
                   </button>
                 )}
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch">
                 {/* Left column: แถว 1 = กิจกรรม, ประเภทเคลม | แถว 2 = รายการสินค้า, ราคา */}
-                <div className="md:col-span-10 grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <div className="space-y-1">
+                <div className="md:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-3 min-h-[160px] content-start">
+                  <div className="space-y-1.5">
                     <label className="font-bold text-slate-500 uppercase flex items-center gap-1.5 tracking-tight text-[10px]">
                       <Zap size={12} className="text-indigo-500" /> กิจกรรม
                     </label>
@@ -1541,7 +1913,7 @@ const ReportClaimFormView = ({ onBack, onPreviewImage, plans, initialReport = nu
                       <option value="offline">Offline</option>
                     </select>
                   </div>
-                  <div className="space-y-1">
+                  <div className="space-y-1.5">
                     <label className="font-bold text-slate-500 uppercase flex items-center gap-1.5 tracking-tight text-[10px]">
                       <Tag size={12} className="text-indigo-500" /> ประเภทเคลม
                     </label>
@@ -1557,7 +1929,7 @@ const ReportClaimFormView = ({ onBack, onPreviewImage, plans, initialReport = nu
                       ))}
                     </select>
                   </div>
-                  <div className="space-y-1">
+                  <div className="space-y-1.5">
                     <label className="font-bold text-slate-500 uppercase flex items-center gap-1.5 tracking-tight text-[10px]">
                       <FileText size={12} className="text-indigo-500" /> รายการสินค้า
                     </label>
@@ -1569,7 +1941,7 @@ const ReportClaimFormView = ({ onBack, onPreviewImage, plans, initialReport = nu
                       className="w-full border-2 border-slate-400 text-xs py-1.5 px-2 rounded-sm focus:border-indigo-500 outline-none"
                     />
                   </div>
-                  <div className="space-y-1">
+                  <div className="space-y-1.5">
                     <label className="font-bold text-slate-500 uppercase flex items-center gap-1.5 tracking-tight text-[10px]">
                       <DollarSign size={12} className="text-indigo-500" /> ราคา (฿)
                     </label>
@@ -1584,13 +1956,23 @@ const ReportClaimFormView = ({ onBack, onPreviewImage, plans, initialReport = nu
                   </div>
                 </div>
                 {/* Right column: ใบเสร็จ */}
-                <div className="md:col-span-2 space-y-1">
-                  <label className="font-bold text-slate-500 uppercase flex items-center gap-1.5 tracking-tight text-[10px]">
+                <div className="md:col-span-4 flex flex-col min-h-0">
+                  <label className="font-bold text-slate-500 uppercase flex items-center gap-1.5 tracking-tight text-[10px] shrink-0">
                     <Receipt size={12} className="text-indigo-500" /> ใบเสร็จ
                   </label>
+                  {idx === 0 && (
+                    <input
+                      ref={receiptFileInputRef}
+                      type="file"
+                      accept="image/png,image/jpeg,image/jpg"
+                      className="hidden"
+                      onChange={onReceiptFileChange}
+                    />
+                  )}
+                  <div className="flex-1 flex flex-col min-h-0 mt-1">
                   {row.receiptFile ? (
-                    <div className="border border-slate-200 group/card relative bg-white rounded-sm overflow-hidden">
-                      <div className="relative aspect-video overflow-hidden bg-slate-100">
+                    <div className="border border-slate-200 group/card relative bg-white rounded-sm overflow-hidden flex-1 flex flex-col min-h-0">
+                      <div className="relative flex-1 min-h-0 overflow-hidden bg-slate-100">
                         <img
                           src={row.receiptFile.url || IMAGE_URLS_REPORT[0]}
                           alt={row.receiptFile.name || 'ใบเสร็จ'}
@@ -1623,13 +2005,22 @@ const ReportClaimFormView = ({ onBack, onPreviewImage, plans, initialReport = nu
                     </div>
                   ) : (
                     !isReadOnly && (
-                      <div className="border-2 border-dashed border-slate-400 bg-slate-50 p-6 flex flex-col items-center justify-center cursor-pointer hover:bg-indigo-50 hover:border-indigo-300 rounded-sm text-slate-400 transition-all min-h-[140px]">
+                      <div
+                        role="button"
+                        tabIndex={0}
+                        onClick={() => onReceiptUploadClick(idx)}
+                        onDrop={(e) => onReceiptDrop(e, idx)}
+                        onDragOver={onReceiptDragOver}
+                        onDragLeave={onReceiptDragLeave}
+                        className="border-2 border-dashed border-slate-400 bg-slate-50 rounded-sm flex-1 min-h-0 flex flex-col items-center justify-center cursor-pointer hover:bg-indigo-50 hover:border-indigo-300 transition-all text-slate-400"
+                      >
                         <Upload size={28} className="mb-2 opacity-60" />
                         <p className="text-xs font-bold uppercase tracking-tight">Drag & Drop หรือ Click เพื่อ Upload ใบเสร็จ</p>
-                        <p className="text-[10px] mt-1 text-slate-400">PNG, JPG</p>
+                        <p className="text-[10px] mt-1 text-rose-500 font-black uppercase">เฉพาะไฟล์ .png และ .jpg</p>
                       </div>
                     )
                   )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -1693,6 +2084,201 @@ const ReportClaimFormView = ({ onBack, onPreviewImage, plans, initialReport = nu
   );
 };
 
+// --- Action Activity (KPI Summary) Views ---
+const KpiStatusBadge = ({ pass }) =>
+  pass ? (
+    <span className="inline-flex items-center gap-1 font-black text-[10px] uppercase bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-sm">
+      <CheckCircle2 size={12} /> PASS
+    </span>
+  ) : (
+    <span className="inline-flex items-center gap-1 font-black text-[10px] uppercase bg-rose-50 text-rose-700 border border-rose-200 px-2 py-0.5 rounded-sm">
+      <X size={12} /> NO PASS
+    </span>
+  );
+
+const ProgressBar = ({ target, actual, label }) => {
+  const pct = target > 0 ? Math.min(150, Math.round((Number(actual) / target) * 100)) : 0;
+  const isOver = actual >= target;
+  return (
+    <div className="space-y-1">
+      <div className="flex justify-between text-[10px] font-bold text-slate-600 uppercase">
+        <span>{label}</span>
+        <span className="tabular-nums">{actual} / {target} ({pct}%)</span>
+      </div>
+      <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
+        <div
+          className={`h-full rounded-full transition-all ${isOver ? 'bg-emerald-500' : 'bg-amber-500'}`}
+          style={{ width: `${Math.min(100, pct)}%` }}
+        />
+      </div>
+    </div>
+  );
+};
+
+const ActionActivityListingView = ({ activityList, onOpenDetail }) => (
+  <div className="space-y-4 animate-in fade-in duration-300 font-sans font-black">
+    <h2 className="text-xl font-black text-slate-800 uppercase tracking-tight">Activity Summary</h2>
+    <p className="text-xs font-bold text-slate-500 uppercase">สรุป KPI แผนรายเดือนเทียบกับ Report & Claim (แสดงเมื่อมี Report ส่งแล้วและอ้างอิง Doc No เดียวกัน)</p>
+    <div className="bg-white border border-slate-300 overflow-hidden shadow-sm rounded-sm">
+      <table className="w-full text-left text-sm">
+        <thead>
+          <tr className="bg-slate-100 border-b border-slate-300 text-[11px]">
+            <th className="px-5 py-2.5 font-black uppercase text-slate-500">Doc No.</th>
+            <th className="px-5 py-2.5 font-black uppercase text-slate-500">เดือน/ปี</th>
+            <th className="px-5 py-2.5 font-black uppercase text-slate-500 text-center">สถานะรวม</th>
+            <th className="px-5 py-2.5 w-10"></th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-slate-200">
+          {activityList.length === 0 ? (
+            <tr>
+              <td colSpan={4} className="px-5 py-8 text-center text-slate-400 text-xs font-bold uppercase">
+                ยังไม่มี Report & Claim ที่ส่งแล้วและอ้างอิงแผน — ส่ง Report ที่มี Plan Doc No. ก่อน
+              </td>
+            </tr>
+          ) : (
+            activityList.map((item) => (
+              <tr
+                key={item.report.id}
+                className="hover:bg-slate-50 transition-colors cursor-pointer"
+                onClick={() => onOpenDetail(item)}
+              >
+                <td className="px-5 py-2.5 font-black text-indigo-600">{item.plan.docNo}</td>
+                <td className="px-5 py-2.5 font-bold text-slate-700">{item.plan.month} {item.plan.year}</td>
+                <td className="px-5 py-2.5 text-center">
+                  <KpiStatusBadge pass={item.overallPass} />
+                </td>
+                <td className="px-5 py-2.5 text-right">
+                  <div className="p-1 text-slate-400 inline-block"><ChevronRight size={16} /></div>
+                </td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+    </div>
+  </div>
+);
+
+const ActionActivityDetailView = ({ activity, onBack, onDownloadExcel, dealerInfo }) => {
+  if (!activity) return null;
+  const { plan, report, leadsTarget, leadsActual, bookingTarget, bookingActual, leadPass, bookingPass, overallPass } = activity;
+  const leadPct = leadsTarget > 0 ? Math.min(150, Math.round((leadsActual / leadsTarget) * 100)) : 0;
+  const bookPct = bookingTarget > 0 ? Math.min(150, Math.round((bookingActual / bookingTarget) * 100)) : 0;
+
+  return (
+    <div className="space-y-4 animate-in fade-in duration-300 font-sans font-black pb-10">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <button
+            onClick={onBack}
+            className="flex items-center gap-1 text-slate-400 hover:text-indigo-600 font-bold text-[10px] uppercase mb-2"
+          >
+            <ChevronLeft size={14} /> กลับไปหน้ารายการ
+          </button>
+          <h2 className="text-xl font-black text-slate-800 uppercase tracking-tight">Activity Summary — {plan.docNo}</h2>
+          <p className="text-[10px] font-bold text-slate-500 mt-1">
+            Report: {report.docNo} · {plan.month} {plan.year}
+          </p>
+        </div>
+        <button
+          onClick={() => onDownloadExcel(report)}
+          className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 font-bold text-xs uppercase rounded-sm shadow-sm"
+        >
+          <Download size={18} /> Download Report (Excel)
+        </button>
+      </div>
+
+      <section className="bg-white border border-slate-300 overflow-hidden shadow-sm rounded-sm font-sans font-black">
+        <div className="bg-slate-800 px-5 py-2 flex items-center gap-2 text-white font-black font-sans">
+          <Store size={16} />
+          <h3 className="text-[11px] uppercase tracking-tight">Dealer Information</h3>
+        </div>
+        <div className="p-5 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="md:col-span-3">
+            <InfoItem label="ชื่อผู้จำหน่าย" value={dealerInfo?.dealerName || '—'} icon={<Layout size={14} />} />
+          </div>
+          <InfoItem label="ผู้ติดต่อ" value={dealerInfo?.contactPerson || '—'} icon={<User size={14} />} />
+          <InfoItem label="อีเมลติดต่อ" value={dealerInfo?.email || '—'} icon={<Mail size={14} />} />
+          <InfoItem label="เบอร์โทรศัพท์" value={dealerInfo?.mobilePhone || '—'} icon={<Phone size={14} />} />
+        </div>
+      </section>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-white border border-slate-300 rounded-sm p-5 shadow-sm">
+          <h3 className="text-[11px] font-black uppercase text-slate-500 border-b border-slate-200 pb-2 mb-4">Lead KPI</h3>
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm font-bold text-slate-600">Target vs Actual</span>
+            <KpiStatusBadge pass={leadPass} />
+          </div>
+          <ProgressBar target={leadsTarget} actual={leadsActual} label="Leads" />
+        </div>
+        <div className="bg-white border border-slate-300 rounded-sm p-5 shadow-sm">
+          <h3 className="text-[11px] font-black uppercase text-slate-500 border-b border-slate-200 pb-2 mb-4">Booking KPI</h3>
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm font-bold text-slate-600">Target vs Actual</span>
+            <KpiStatusBadge pass={bookingPass} />
+          </div>
+          <ProgressBar target={bookingTarget} actual={bookingActual} label="Bookings" />
+        </div>
+      </div>
+
+      <div
+        className={`rounded-sm p-8 shadow-md border-2 text-center ${
+          overallPass
+            ? 'bg-emerald-50 border-emerald-400 ring-2 ring-emerald-200/50'
+            : 'bg-rose-50 border-rose-400 ring-2 ring-rose-200/50'
+        }`}
+      >
+        <p className="text-[11px] font-black uppercase tracking-wider text-slate-500 mb-3">สถานะรวม (Overall)</p>
+        <div className="flex flex-col items-center gap-3">
+          {overallPass ? (
+            <span className="inline-flex items-center gap-2 font-black text-lg uppercase bg-emerald-500 text-white border-2 border-emerald-600 px-6 py-3 rounded-sm shadow-lg">
+              <CheckCircle2 size={28} strokeWidth={2.5} />
+              PASS
+            </span>
+          ) : (
+            <span className="inline-flex items-center gap-2 font-black text-lg uppercase bg-rose-500 text-white border-2 border-rose-600 px-6 py-3 rounded-sm shadow-lg">
+              <X size={28} strokeWidth={2.5} />
+              NO PASS
+            </span>
+          )}
+          <p className={`text-sm font-bold max-w-md ${overallPass ? 'text-emerald-800' : 'text-rose-800'}`}>
+            {overallPass
+              ? 'Lead และ Booking เป็นไปตามเป้าหมายที่ตั้งไว้'
+              : 'Lead หรือ Booking ยังไม่ถึงเป้าหมาย'}
+          </p>
+        </div>
+      </div>
+
+      <section className="bg-white border border-slate-300 rounded-sm overflow-hidden shadow-sm">
+        <div className="bg-slate-800 px-5 py-2 flex items-center gap-2 text-white font-black">
+          <BarChart3 size={16} />
+          <h3 className="text-[11px] uppercase">สรุปจาก Report & Claim</h3>
+        </div>
+        <div className="p-5 grid grid-cols-2 gap-4 text-sm">
+          <div>
+            <p className="text-[10px] font-bold text-slate-400 uppercase">Dealer</p>
+            <p className="font-black text-slate-800">{dealerInfo?.dealerName || '—'}</p>
+          </div>
+          <div>
+            <p className="text-[10px] font-bold text-slate-400 uppercase">Report Doc No.</p>
+            <p className="font-black text-indigo-600">{report.docNo}</p>
+          </div>
+          <div>
+            <p className="text-[10px] font-bold text-slate-400 uppercase">Lead Actual (Offline + Online)</p>
+            <p className="font-black tabular-nums">{leadsActual}</p>
+          </div>
+          <div>
+            <p className="text-[10px] font-bold text-slate-400 uppercase">Booking Actual</p>
+            <p className="font-black tabular-nums">{bookingActual}</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
 const App = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [activeMenu, setActiveMenu] = useState('monthly_plan');
@@ -1702,9 +2288,14 @@ const App = () => {
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [selectedReport, setSelectedReport] = useState(null);
+  const [selectedActivity, setSelectedActivity] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const [notificationOpen, setNotificationOpen] = useState(false);
   const notificationRef = useRef(null);
+  const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
+  const avatarRef = useRef(null);
+
+  const avatarInitials = (MOCK_DEALER_INFO.email || 'OJ').slice(0, 2).toUpperCase();
 
   const pendingPlans = plans.filter((p) => p.status === 'Pending');
   const pendingContent = MOCK_CONTENT_REQUESTS.filter((r) => r.status === 'Pending');
@@ -1740,10 +2331,11 @@ const App = () => {
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (notificationRef.current && !notificationRef.current.contains(e.target)) setNotificationOpen(false);
+      if (avatarRef.current && !avatarRef.current.contains(e.target)) setAvatarMenuOpen(false);
     };
-    if (notificationOpen) document.addEventListener('click', handleClickOutside);
+    if (notificationOpen || avatarMenuOpen) document.addEventListener('click', handleClickOutside);
     return () => document.removeEventListener('click', handleClickOutside);
-  }, [notificationOpen]);
+  }, [notificationOpen, avatarMenuOpen]);
 
   const menuItems = [
     { id: 'monthly_plan', label: 'Monthly Plan', icon: <Calendar size={20} /> },
@@ -1751,6 +2343,68 @@ const App = () => {
     { id: 'report', label: 'Report & Claim', icon: <FileSpreadsheet size={20} /> },
     { id: 'activity_summary', label: 'Activity Summary', icon: <BarChart3 size={20} /> },
   ];
+
+  const activityList = buildActivityList(plans, reports);
+
+  const handleOpenActivityDetail = (item) => {
+    setSelectedActivity(item);
+    setView('activity_detail');
+  };
+
+  const handleDownloadReportExcel = (report) => {
+    if (!report) return;
+    const wb = XLSX.utils.book_new();
+    const br = report.bookingResult || [];
+    const onlineRows = report.onlineRows || [];
+    const totalOnlineImpression = onlineRows.reduce((s, r) => s + (Number(r.impression) || 0), 0);
+    const totalOnlineLeads = onlineRows.reduce((s, r) => s + (Number(r.leads) || 0), 0);
+    const totalBudget = (Number(report.onlineActualBudget) || 0) + (Number(report.offlineActualBudget) || 0);
+    const totalLeadsOffline = br.reduce((s, r) => s + (Number(r.leadsOffline) || 0), 0);
+    const totalTestDrive = br.reduce((s, r) => s + (Number(r.testDrive) || 0), 0);
+    const totalPlus = br.reduce((s, r) => s + (Number(r.bookingPlus2wd) || 0), 0);
+    const totalUlt = br.reduce((s, r) => s + (Number(r.bookingUltimate4wd) || 0), 0);
+    const totalOther = br.reduce((s, r) => s + (Number(r.bookingOther) || 0), 0);
+    const reportDate = report.date || (report.month && report.year ? `${report.month} ${report.year}` : '');
+    const offFiles = report.offlineFiles || [];
+
+    const rows = [
+      ['', '', '', '', '', '', 'Refer to Document No.', report.docNo || ''],
+      [],
+      ['', '', '', 'OMODA | JAECOO', '', '', '', '', ''],
+      ['', '', '', 'REPORT FORM', '', '', '', '', ''],
+      ['', 'Please submit report at least 7 working days after event.', '', '', '', '', '', '', ''],
+      [],
+      ['Date', '', reportDate, '', '', '', '', '', ''],
+      ['Dealer Name', '', MOCK_DEALER_INFO.dealerName, '', '', '', '', '', ''],
+      ['Contact person', '', MOCK_DEALER_INFO.contactPerson, '', '', '', '', '', ''],
+      ['Tel', '', '', '', '', '', MOCK_DEALER_INFO.mobilePhone, '', ''],
+      ['Date of activity', '', reportDate, '', '', '', '', '', ''],
+      ['Type of activity', '', report.offlineActivityType || '', '', 'Activity', report.onlineActivityType || '', '', ''],
+      ['Location', '', '', '', '', '', '', '', ''],
+      [],
+      ['', 'Please upload the event photos (both online & offline, artwork, materials, activity, customer, car, etc)', '', '', '', '', '', '', ''],
+      ['', offFiles[0]?.name || 'Photo 1', '', offFiles[1]?.name || 'Photo 2', '', offFiles[2]?.name || 'Photo 3', '', offFiles[3]?.name || 'Photo 4', ''],
+      [],
+      ['', 'Actual Budget', totalBudget, 'THB', '', '', 'For online activity', '', ''],
+      ['', '', '', '', '', '', 'Impression', 'Leads (online)', ''],
+      ['', '', '', '', '', '', totalOnlineImpression || '', totalOnlineLeads || '', ''],
+      [],
+      [],
+      ['', 'Booking Result : Please complete number all the boxes', '', '', '', '', '', '', ''],
+      ['', 'Model', 'No of Leads (off-line)', '', 'No of Test drive', '', 'Plus/2WD', 'Ultimate/4WD', 'other'],
+      ['', VEHICLE_MODELS[0] || '', br[0]?.leadsOffline ?? '', '', br[0]?.testDrive ?? '', '', br[0]?.bookingPlus2wd ?? '', br[0]?.bookingUltimate4wd ?? '', br[0]?.bookingOther ?? ''],
+      ['', VEHICLE_MODELS[1] || '', br[1]?.leadsOffline ?? '', '', br[1]?.testDrive ?? '', '', br[1]?.bookingPlus2wd ?? '', br[1]?.bookingUltimate4wd ?? '', br[1]?.bookingOther ?? ''],
+      ['', VEHICLE_MODELS[2] || '', br[2]?.leadsOffline ?? '', '', br[2]?.testDrive ?? '', '', br[2]?.bookingPlus2wd ?? '', br[2]?.bookingUltimate4wd ?? '', br[2]?.bookingOther ?? ''],
+      ['', VEHICLE_MODELS[3] || '', br[3]?.leadsOffline ?? '', '', br[3]?.testDrive ?? '', '', br[3]?.bookingPlus2wd ?? '', br[3]?.bookingUltimate4wd ?? '', br[3]?.bookingOther ?? ''],
+      ['', 'Total', totalLeadsOffline, '', totalTestDrive, '', totalPlus, totalUlt, totalOther],
+    ];
+
+    const ws = XLSX.utils.aoa_to_sheet(rows);
+    if (ws['!cols'] === undefined) ws['!cols'] = [];
+    [1, 2, 3, 4, 5, 6, 7, 8].forEach((i) => { ws['!cols'][i] = ws['!cols'][i] || {}; ws['!cols'][i].wch = Math.max(ws['!cols'][i].wch || 0, 14); });
+    XLSX.utils.book_append_sheet(wb, ws, 'Report Form');
+    XLSX.writeFile(wb, `Report_${(report.docNo || 'export').replace(/\s/g, '_')}.xlsx`);
+  };
 
   const handleOpenContentDetail = (req) => {
     setSelectedRequest(req);
@@ -1831,6 +2485,25 @@ const App = () => {
         );
     }
 
+    if (activeMenu === 'activity_summary') {
+      if (view === 'listing')
+        return (
+          <ActionActivityListingView
+            activityList={activityList}
+            onOpenDetail={handleOpenActivityDetail}
+          />
+        );
+      if (view === 'activity_detail')
+        return (
+          <ActionActivityDetailView
+            activity={selectedActivity}
+            onBack={() => { setView('listing'); setSelectedActivity(null); }}
+            onDownloadExcel={handleDownloadReportExcel}
+            dealerInfo={MOCK_DEALER_INFO}
+          />
+        );
+    }
+
     return (
       <div className="flex flex-col items-center justify-center h-[60vh] bg-white border border-dashed border-slate-300 rounded-sm font-sans font-black">
         <h2 className="text-xl font-black text-slate-400 uppercase tracking-tight">
@@ -1899,6 +2572,7 @@ const App = () => {
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
+                  setAvatarMenuOpen(false);
                   setNotificationOpen((o) => !o);
                 }}
                 className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-sm border transition-colors ${
@@ -2019,8 +2693,58 @@ const App = () => {
             <span className="text-xs text-slate-700 font-bold tracking-tight hidden sm:inline">
               {MOCK_DEALER_INFO.contactPerson}
             </span>
-            <div className="w-8 h-8 bg-slate-800 rounded-none flex items-center justify-center text-white text-xs font-black shrink-0">
-              OJ
+            <div className="relative" ref={avatarRef}>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setNotificationOpen(false);
+                  setAvatarMenuOpen((o) => !o);
+                }}
+                className="w-8 h-8 bg-slate-800 rounded-none flex items-center justify-center text-white text-xs font-black shrink-0 hover:bg-slate-700 transition-colors cursor-pointer"
+                title="เมนูผู้ใช้"
+              >
+                {avatarInitials}
+              </button>
+              {avatarMenuOpen && (
+                <div className="absolute right-0 top-full mt-1 w-52 bg-white border border-slate-200 shadow-lg rounded-sm z-50 font-sans overflow-hidden">
+                  <div className="p-2 border-b border-slate-100 font-black text-[10px] uppercase text-slate-500 tracking-tight">
+                    เมนู
+                  </div>
+                  <ul className="py-1 text-sm">
+                    <li>
+                      <button
+                        type="button"
+                        onClick={() => setAvatarMenuOpen(false)}
+                        className="w-full text-left px-3 py-2.5 hover:bg-slate-50 flex items-center gap-2 text-slate-800 font-bold"
+                      >
+                        <User size={14} className="text-slate-500" />
+                        Edit profile
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        type="button"
+                        onClick={() => setAvatarMenuOpen(false)}
+                        className="w-full text-left px-3 py-2.5 hover:bg-slate-50 flex items-center gap-2 text-slate-800 font-bold"
+                      >
+                        <Settings size={14} className="text-slate-500" />
+                        Settings
+                      </button>
+                    </li>
+                    <li className="border-t border-slate-100">
+                      <button
+                        type="button"
+                        onClick={() => setAvatarMenuOpen(false)}
+                        className="w-full text-left px-3 py-2.5 hover:bg-slate-50 flex items-center gap-2 text-rose-600 font-bold"
+                      >
+                        <LogOut size={14} />
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
         </header>
