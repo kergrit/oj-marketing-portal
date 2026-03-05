@@ -55,11 +55,118 @@ const MOCK_DEALER_INFO = {
   email: 'somchai.m@omodajaecoo.co.th',
 };
 
+const MOCK_ADMIN_INFO = {
+  name: 'ธนาวุฒิ อนุมัติไว',
+  email: 'thanawut.a@omodajaecoo.co.th',
+  phone: '02-111-2233',
+};
+
+const MOCK_USERS = [
+  { id: 1, name: 'ธนาวุฒิ อนุมัติไว', email: 'thanawut.a@omodajaecoo.co.th', phone: '02-111-2233', role: 'admin' },
+  { id: 2, name: 'สมชาย มีความสุข', email: 'somchai.m@omodajaecoo.co.th', phone: '081-234-5678', role: 'dealer', dealerCode: 'AGE', dealerName: 'โอโมดา แอนด์ เจคู เอจีอี ออโต้ แกลเลอรี่ สาขารามคำแหง' },
+  { id: 3, name: 'ศิริมา อนุมัติเก่ง', email: 'sirima.k@omodajaecoo.co.th', phone: '02-999-8877', role: 'admin' },
+  { id: 4, name: 'วิชัย ผู้จัดการดีลเลอร์', email: 'wichai.d@dealer.co.th', phone: '089-111-2233', role: 'dealer', dealerCode: 'AGEB', dealerName: 'โอ โมดา แอนด์ เจคู เอจีอี ออโต้ แกลเลอรี่ สาขาบางนา' },
+  { id: 5, name: 'มานี มาร์เก็ตติ้ง', email: 'manee.m@omodajaecoo.co.th', phone: '082-444-5566', role: 'dealer', dealerCode: 'BSKK', dealerName: 'โอโมดา แอนด์ เจคู บลูสกาย สาขาถนนเศรษฐกิจ' },
+];
+
+const MOCK_DEALERS = [
+  { id: 1, dealerName: 'โอโมดา แอนด์ เจคู เอจีอี ออโต้ แกลเลอรี่ สาขารามคำแหง', dealerCode: 'AGE' },
+  { id: 2, dealerName: 'โอ โมดา แอนด์ เจคู เอจีอี ออโต้ แกลเลอรี่ สาขาบางนา', dealerCode: 'AGEB' },
+  { id: 3, dealerName: 'โอโมดา แอนด์ เจคู เอจีอี ออโต้ แกลเลอรี่ สาขารังสิต', dealerCode: 'AGERS' },
+  { id: 4, dealerName: 'โอโมดา แอนด์ เจคู เอจีอี ออโต้ แกลเลอรี่ ชลบุรี', dealerCode: 'AGEC' },
+  { id: 5, dealerName: 'โอโมดา แอนด์ เจคู เอจีอี ออโต้ แกลเลอรี่ พัทยา', dealerCode: 'AGEP' },
+  { id: 6, dealerName: 'โอ โมดา แอนด์ เจคู เอกสห สาขาสุวินทวงศ์', dealerCode: 'MLS' },
+  { id: 7, dealerName: 'โอ โมดา แอนด์ เจคู บลูสกาย สาขาพระราม 2', dealerCode: 'BSK2' },
+  { id: 8, dealerName: 'โอโมดา แอนด์ เจคู บลูสกาย สาขาถนนเศรษฐกิจ', dealerCode: 'BSKK' },
+  { id: 9, dealerName: 'โอโมดา แอนด์ เจคู บลูสกาย สาขาสรงประภา', dealerCode: 'BSKS' },
+  { id: 10, dealerName: 'โอโมดา แอนด์ เจคู ซีซีซี ออโต้ จังหวัดอุบลราชธานี', dealerCode: 'CCC' },
+  { id: 11, dealerName: 'โอโมดา แอนด์ เจคู ช.เอราวัณ จังหวัดนครปฐม', dealerCode: 'CHER' },
+  { id: 12, dealerName: 'โอโมดา แอนด์ เจคู เอ็มเพอร์เรอร์ บางแค', dealerCode: 'EMP' },
+  { id: 13, dealerName: 'โอโมดา แอนด์ เจคู ยูโรเปียน ทองหล่อ', dealerCode: 'ERO' },
+  { id: 14, dealerName: 'โอ โมดา แอนด์ เจคู เอกสห นครราชสีมา (โคราช)', dealerCode: 'ESK' },
+  { id: 15, dealerName: 'โอ โมดา แอนด์ เจคู อีวี บางกอก สาขาดอนเมือง', dealerCode: 'EVBK' },
+  { id: 16, dealerName: 'โอโมดา แอนด์ เจคู ฮอร์ริซอน พีเอฟ สาขาหาดใหญ่', dealerCode: 'HRH' },
+  { id: 17, dealerName: 'โอโมดา แอนด์ เจคู จิ่วเฉิง หลักสี่', dealerCode: 'JIU' },
+  { id: 18, dealerName: 'โอโมดา แอนด์ เจคู ไลฟ์สไตล์ออโต สาขาภูเก็ต', dealerCode: 'LSA' },
+  { id: 19, dealerName: 'โอ โมดา แอนด์ เจคู มาพร ระยอง', dealerCode: 'MAP' },
+  { id: 20, dealerName: 'โอโมดา แอนด์ เจคู เมก้า สาขาติวานนท์', dealerCode: 'MEG' },
+  { id: 21, dealerName: 'โอโมดา แอนด์ เจคู นครินทร์ สาขาถนนศรีนครินทร์', dealerCode: 'NKN' },
+  { id: 22, dealerName: 'โอโมดา แอนด์ เจคู นครินทร์ สาขาบิ๊กซี สมุทรปราการ', dealerCode: 'NKNS' },
+  { id: 23, dealerName: 'โอโมดา แอนด์ เจคู พระนคร สาขา บางซื่อ', dealerCode: 'PNAB' },
+  { id: 24, dealerName: 'โอโมดา แอนด์ เจคู พระนคร สาขา อุดมสุข', dealerCode: 'PNAU' },
+  { id: 25, dealerName: 'โอโมดา แอนด์ เจคู ริช เชียงใหม่', dealerCode: 'RCM' },
+  { id: 26, dealerName: 'โอโมดา แอนด์ เจคู ริช เชียงราย', dealerCode: 'RCR' },
+  { id: 27, dealerName: 'โอ โมดา แอนด์ เจคู ริช ลำปาง', dealerCode: 'RLP' },
+  { id: 28, dealerName: 'โอโมดา แอนด์ เจคู อาร์งวัฒนา อุดรธานี', dealerCode: 'RHU' },
+  { id: 29, dealerName: 'โอโมดา แอนด์ เจคู สกายได้ร์ฟ สาขาสิรินธร', dealerCode: 'SKD' },
+  { id: 30, dealerName: 'โอโมดา แอนด์ เจคู สกายได้ร์ฟ สาขาพาซิโอพาร์ค กาญจนาภิเษก (เฉพาะจัดจำหน่าย)', dealerCode: 'SKDK' },
+  { id: 31, dealerName: 'โอโมดา แอนด์ เจคู ศรีวัฒน์ สาขาแจ้งวัฒนะ', dealerCode: 'SRWC' },
+  { id: 32, dealerName: 'โอโมดา แอนด์ เจคู ศรีวัฒน์ สาขารัตนาธิเบศ', dealerCode: 'SRWR' },
+  { id: 33, dealerName: 'โอโมดา แอนด์ เจคู เทคคาร์ ลาดพร้าว', dealerCode: 'TCK' },
+  { id: 34, dealerName: 'โอโมดา แอนด์ เจคู ไทยธาดา อีวี จังหวัดอยุธยา', dealerCode: 'THEV' },
+  { id: 35, dealerName: 'โอโมดา แอนด์ เจคู ธนาสิทธิ์ ขอนแก่น', dealerCode: 'THS' },
+  { id: 36, dealerName: 'โอโมดา แอนด์ เจคู วี กรุ๊ป สาขานครศรีธรรมราช', dealerCode: 'TNS' },
+  { id: 37, dealerName: 'โอโมดา แอนด์ เจคู เอกสห ตราด', dealerCode: 'VGN' },
+  { id: 38, dealerName: 'โอโมดา แอนด์ เจคู วี กรุ๊ป สาขาสุราษฎร์ธานี', dealerCode: 'VGNS' },
+  { id: 39, dealerName: 'โอโมดา แอนด์ เจคู วี กรุ๊ป สาขาพัทลุง', dealerCode: 'VGP' },
+  { id: 40, dealerName: 'โอโมดา แอนด์ เจคู วี กรุ๊ป สาขากาญจนบุรี', dealerCode: 'VGPK' },
+  { id: 41, dealerName: 'โอโมดา แอนด์ เจคู วี กรุ๊ป สาขาสงขลา', dealerCode: 'VGS' },
+  { id: 42, dealerName: 'โอโมดา แอนด์ เจคู ยูนิค ออโต้ สาขา', dealerCode: 'UOS' },
+  { id: 43, dealerName: 'โอโมดา แอนด์ เจคู อาเร่ สาขา', dealerCode: 'ARE' },
+  { id: 44, dealerName: 'โอโมดา แอนด์ เจคู ทีดีเอส', dealerCode: 'TDS' },
+  { id: 45, dealerName: 'โอโมดา แอนด์ เจคู เอสเอ็มแอล', dealerCode: 'SML' },
+  { id: 46, dealerName: 'โอโมดา แอนด์ เจคู เอ็นเอ', dealerCode: 'ANA' },
+  { id: 47, dealerName: 'โอโมดา แอนด์ เจคู ซีเอ็มพี', dealerCode: 'CMP' },
+  { id: 48, dealerName: 'โอโมดา แอนด์ เจคู วีจีที', dealerCode: 'VGT' },
+  { id: 49, dealerName: 'โอโมดา แอนด์ เจคู วีจีเอ็มเอส', dealerCode: 'VGMS' },
+  { id: 50, dealerName: 'โอโมดา แอนด์ เจคู ซีอีวีเอส สาขา', dealerCode: 'CEVSW' },
+  { id: 51, dealerName: 'โอโมดา แอนด์ เจคู ดีเคบี', dealerCode: 'DKB' },
+  { id: 52, dealerName: 'โอโมดา แอนด์ เจคู เอสทีเอชเอช', dealerCode: 'STHH' },
+  { id: 53, dealerName: 'โอโมดา แอนด์ เจคู ซีอีวีเอสเค', dealerCode: 'CEVSK' },
+  { id: 54, dealerName: 'โอโมดา แอนด์ เจคู เอ็นทีอาร์', dealerCode: 'NTR' },
+  { id: 55, dealerName: 'โอโมดา แอนด์ เจคู อีเอสอาร์', dealerCode: 'ESR' },
+  { id: 56, dealerName: 'โอโมดา แอนด์ เจคู พีพีแอล', dealerCode: 'PPL' },
+  { id: 57, dealerName: 'โอโมดา แอนด์ เจคู เอสจีเอ็น', dealerCode: 'SGAN' },
+  { id: 58, dealerName: 'โอโมดา แอนด์ เจคู เอ็มทีซี', dealerCode: 'MTC' },
+  { id: 59, dealerName: 'โอโมดา แอนด์ เจคู เอสเค', dealerCode: 'ASK' },
+  { id: 60, dealerName: 'โอโมดา แอนด์ เจคู เอ็มเอแอล', dealerCode: 'MAL' },
+  { id: 61, dealerName: 'โอโมดา แอนด์ เจคู พีทีเอ็น', dealerCode: 'PTN' },
+  { id: 62, dealerName: 'โอโมดา แอนด์ เจคู ซีเอชอาร์บี', dealerCode: 'CHRB' },
+  { id: 63, dealerName: 'โอโมดา แอนด์ เจคู เอกสห สาขาตราด', dealerCode: 'ESKT' },
+  { id: 64, dealerName: 'โอโมดา แอนด์ เจคู เอกสห จันทบุรี', dealerCode: 'ESKC' },
+  { id: 65, dealerName: 'โอ โมดา แอนด์ เจคู ซีแอล ออโต ฉะเชิงเทรา', dealerCode: 'CLC' },
+  { id: 66, dealerName: 'โอ โมดา แอนด์ เจคู ซีแอล ออโต ปราจีนบุรี', dealerCode: 'CLP' },
+  { id: 67, dealerName: 'โอโมดา แอนด์ เจคู ที ออโต้ ไดรฟ์ สิงห์บุรี', dealerCode: 'TADS' },
+  { id: 68, dealerName: 'โอโมดา แอนด์ เจคู ไดรฟ์ บุรีรัมย์', dealerCode: 'DBR' },
+  { id: 69, dealerName: 'โอ โมดา แอนด์ เจคู อีวีเอส พลัส รามอินทรา', dealerCode: 'PGR' },
+  { id: 70, dealerName: 'โอโมดา แอนด์ เจคู ฟิวเจอร์ กาญจนบุรี', dealerCode: 'FKR' },
+];
+
 const ONLINE_OPTIONS = ['Livestream', 'Post on Facebook', 'Post on TikTok', 'Other'];
 const OFFLINE_OPTIONS = ['Roadshow', 'OJ Club', 'Showroom event', 'Other'];
 
 const VEHICLE_MODELS = ['OMODA C5 EV', 'JAECOO 5 EV', 'JAECOO 6 EV', 'JAECOO 7 PHEV'];
 const MONTHS_TH = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+
+const sortPlansByDateDesc = (list) =>
+  [...list].sort((a, b) => {
+    const y = Number(b.year || 0) - Number(a.year || 0);
+    if (y !== 0) return y;
+    return MONTHS_TH.indexOf(b.month) - MONTHS_TH.indexOf(a.month);
+  });
+const sortContentByDateDesc = (list) => [...list].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+const sortReportsByDateDesc = (list) =>
+  [...list].sort((a, b) => {
+    const getKey = (r) =>
+      r.date || `${r.year || ''}-${String((MONTHS_TH.indexOf(r.month) + 1) || 1).padStart(2, '0')}-01`;
+    return getKey(b).localeCompare(getKey(a));
+  });
+const sortActivityListByDateDesc = (list) =>
+  [...list].sort((a, b) => {
+    const y = Number(b.plan?.year || 0) - Number(a.plan?.year || 0);
+    if (y !== 0) return y;
+    return MONTHS_TH.indexOf(b.plan?.month) - MONTHS_TH.indexOf(a.plan?.month);
+  });
 
 const IMAGE_URLS = [
   'https://scontent.fbkk11-1.fna.fbcdn.net/v/t39.30808-6/646792893_770856792764211_2807835162608794121_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=13d280&_nc_ohc=LFxtunO_HccQ7kNvwFTCvAH&_nc_oc=AdlzzAFOplKF_W3RtwBI8zMD9V8-iF5mJ972kb2bs71zQbP0N6ZpcUPwfMyzeMDACU0&_nc_zt=23&_nc_ht=scontent.fbkk11-1.fna&_nc_gid=CSId5y3fGp_DX2dAjn1NNA&_nc_ss=8&oh=00_Afy_3KGZOs8wkBS4Ui92mC6oFb2o3JhjvQNMXCbWc3fjRw&oe=69ADF105',
@@ -79,8 +186,43 @@ const IMAGE_URLS_REPORT = [
 
 const MOCK_PLANS = [
   {
+    id: 0,
+    docNo: 'AGE20251201v1',
+    dealerCode: 'AGE',
+    dealerName: 'โอโมดา แอนด์ เจคู เอจีอี ออโต้ แกลเลอรี่ สาขารามคำแหง',
+    month: 'ธันวาคม',
+    year: '2568',
+    status: 'Approved',
+    totalBudget: 400000,
+    leads: 260,
+    bookings: 16,
+    onlineData: [
+      { activity: 'Post on Facebook', otherDetail: 'โปรโมทส่งท้ายปี OMODA & JAECOO', date: '2025-12-05', location: 'Facebook Page' },
+      { activity: 'Livestream', otherDetail: 'ไลฟ์สรุปโปรโมชั่นเดือนธันวาคม', date: '2025-12-15', location: 'TikTok / FB' },
+      { activity: 'Post on TikTok', otherDetail: 'คลิปรีวิว OMODA C5 EV', date: '2025-12-20', location: 'TikTok' },
+      { activity: 'Post on Facebook', otherDetail: 'โฆษณาปลายปี', date: '2025-12-28', location: 'Meta Ads' },
+    ],
+    offlineData: [
+      { activity: 'Roadshow', otherDetail: 'จัดแสดงส่งท้ายปีที่ศูนย์การค้า', date: '2025-12-01', location: 'Central World' },
+      { activity: 'Showroom event', otherDetail: 'งานปีใหม่ที่โชว์รูม', date: '2025-12-20', location: 'Showroom Ram' },
+      { activity: 'OJ Club', otherDetail: 'กิจกรรมสมาชิกคลับส่งท้ายปี', date: '2025-12-27', location: 'Showroom Ram' },
+      { activity: 'Other', otherDetail: 'กิจกรรมแจกรางวัล', date: '2025-12-31', location: 'Showroom Ram' },
+    ],
+    onlineBudget: 220000,
+    offlineBudget: 180000,
+    approvalData: {
+      date: '2025-12-08',
+      time: '10:00',
+      name: 'ธนาวุฒิ อนุมัติไว (Admin)',
+      email: 'thanawut.a@omodajaecoo.co.th',
+      phone: '02-111-2233',
+    },
+  },
+  {
     id: 1,
     docNo: 'AGE20260115v1',
+    dealerCode: 'AGE',
+    dealerName: 'โอโมดา แอนด์ เจคู เอจีอี ออโต้ แกลเลอรี่ สาขารามคำแหง',
     month: 'มกราคม',
     year: '2569',
     status: 'Approved',
@@ -112,6 +254,8 @@ const MOCK_PLANS = [
   {
     id: 2,
     docNo: 'AGE20260201v1',
+    dealerCode: 'AGE',
+    dealerName: 'โอโมดา แอนด์ เจคู เอจีอี ออโต้ แกลเลอรี่ สาขารามคำแหง',
     month: 'กุมภาพันธ์',
     year: '2569',
     status: 'Approved',
@@ -143,6 +287,8 @@ const MOCK_PLANS = [
   {
     id: 3,
     docNo: 'AGE20260304v2',
+    dealerCode: 'AGE',
+    dealerName: 'โอโมดา แอนด์ เจคู เอจีอี ออโต้ แกลเลอรี่ สาขารามคำแหง',
     month: 'มีนาคม',
     year: '2569',
     status: 'Pending',
@@ -167,6 +313,8 @@ const MOCK_PLANS = [
   {
     id: 4,
     docNo: 'AGE20260401v3',
+    dealerCode: 'AGE',
+    dealerName: 'โอโมดา แอนด์ เจคู เอจีอี ออโต้ แกลเลอรี่ สาขารามคำแหง',
     month: 'เมษายน',
     year: '2569',
     status: 'Draft',
@@ -187,6 +335,8 @@ const MOCK_PLANS = [
 const MOCK_CONTENT_REQUESTS = [
   {
     id: 101,
+    dealerCode: 'AGE',
+    dealerName: 'โอโมดา แอนด์ เจคู เอจีอี ออโต้ แกลเลอรี่ สาขารามคำแหง',
     title: 'สื่อโฆษณา Facebook OMODA C5 EV',
     usage: 'โปรโมทแคมเปญเดือนมีนาคม',
     date: '2025-03-04',
@@ -196,6 +346,8 @@ const MOCK_CONTENT_REQUESTS = [
   },
   {
     id: 102,
+    dealerCode: 'AGE',
+    dealerName: 'โอโมดา แอนด์ เจคู เอจีอี ออโต้ แกลเลอรี่ สาขารามคำแหง',
     title: 'ภาพกราฟิกงาน Roadshow',
     usage: 'ภาพบรรยากาศงานโชว์รูม',
     date: '2025-03-01',
@@ -212,6 +364,8 @@ const MOCK_CONTENT_REQUESTS = [
   },
   {
     id: 103,
+    dealerCode: 'AGE',
+    dealerName: 'โอโมดา แอนด์ เจคู เอจีอี ออโต้ แกลเลอรี่ สาขารามคำแหง',
     title: 'แคมเปญ JAECOO 7 PHEV',
     usage: 'แจ้งโปรโมชั่นประจำไตรมาส',
     date: '2025-02-25',
@@ -229,6 +383,8 @@ const MOCK_CONTENT_REQUESTS = [
   },
   {
     id: 104,
+    dealerCode: 'AGE',
+    dealerName: 'โอโมดา แอนด์ เจคู เอจีอี ออโต้ แกลเลอรี่ สาขารามคำแหง',
     title: 'ชุดภาพโปรโมท JAECOO 6 (ร่าง)',
     usage: 'เตรียมสื่อสำหรับเปิดสาขาใหม่ไตรมาส 3',
     date: '2025-03-04',
@@ -246,8 +402,50 @@ const defaultBookingRow = () => ({ leadsOffline: 0, testDrive: 0, bookingPlus2wd
 
 const MOCK_REPORT_CLAIMS = [
   {
+    id: 200,
+    docNo: 'RPT-AGE-2025-012',
+    dealerCode: 'AGE',
+    dealerName: 'โอโมดา แอนด์ เจคู เอจีอี ออโต้ แกลเลอรี่ สาขารามคำแหง',
+    planDocNo: 'AGE20251201v1',
+    month: 'ธันวาคม',
+    year: '2568',
+    status: 'Approved',
+    date: '2025-12-31',
+    onlineActivityType: 'Post on Facebook',
+    onlineRows: [
+      { url: 'https://facebook.com/post/dec', impression: '25000', leads: '55' },
+      { url: 'https://meta.business/ads/dec', impression: '18000', leads: '48' },
+    ],
+    offlineActivityType: 'Roadshow',
+    offlineFiles: [
+      { name: 'roadshow_dec_1.jpg', url: IMAGE_URLS_REPORT[0] },
+      { name: 'roadshow_dec_2.jpg', url: IMAGE_URLS_REPORT[1] },
+    ],
+    onlineActualBudget: 200000,
+    offlineActualBudget: 165000,
+    claimRows: [
+      { activityType: 'offline', claimType: 'Space rental', detail: 'ค่าเช่าพื้นที่ส่งท้ายปี', price: '80000', receiptFile: { name: 'receipt_dec_1.jpg', url: IMAGE_URLS_REPORT[0] } },
+      { activityType: 'offline', claimType: 'Customer giveaway', detail: 'ของแจกผู้เข้าร่วมงาน', price: '35000', receiptFile: { name: 'receipt_dec_2.jpg', url: IMAGE_URLS_REPORT[1] } },
+    ],
+    bookingResult: [
+      { leadsOffline: 38, testDrive: 5, bookingPlus2wd: 1, bookingUltimate4wd: 0, bookingOther: 0 },
+      { leadsOffline: 32, testDrive: 4, bookingPlus2wd: 0, bookingUltimate4wd: 1, bookingOther: 0 },
+      { leadsOffline: 28, testDrive: 3, bookingPlus2wd: 0, bookingUltimate4wd: 0, bookingOther: 1 },
+      { leadsOffline: 25, testDrive: 2, bookingPlus2wd: 1, bookingUltimate4wd: 0, bookingOther: 0 },
+    ],
+    approvalData: {
+      date: '2026-01-05',
+      time: '14:00',
+      name: 'ธนาวุฒิ อนุมัติไว (Admin)',
+      email: 'thanawut.a@omodajaecoo.co.th',
+      phone: '02-111-2233',
+    },
+  },
+  {
     id: 201,
     docNo: 'RPT-AGE-2026-001',
+    dealerCode: 'AGE',
+    dealerName: 'โอโมดา แอนด์ เจคู เอจีอี ออโต้ แกลเลอรี่ สาขารามคำแหง',
     planDocNo: 'AGE20260115v1',
     month: 'มกราคม',
     year: '2569',
@@ -288,10 +486,12 @@ const MOCK_REPORT_CLAIMS = [
   {
     id: 202,
     docNo: 'RPT-AGE-2026-002',
+    dealerCode: 'AGE',
+    dealerName: 'โอโมดา แอนด์ เจคู เอจีอี ออโต้ แกลเลอรี่ สาขารามคำแหง',
     planDocNo: 'AGE20260201v1',
     month: 'กุมภาพันธ์',
     year: '2569',
-    status: 'Approved',
+    status: 'Pending',
     date: '2026-02-28',
     time: '13:30',
     onlineActivityType: 'Post on TikTok',
@@ -317,17 +517,12 @@ const MOCK_REPORT_CLAIMS = [
       { leadsOffline: 8, testDrive: 3, bookingPlus2wd: 0, bookingUltimate4wd: 1, bookingOther: 1 },
       { leadsOffline: 6, testDrive: 2, bookingPlus2wd: 1, bookingUltimate4wd: 0, bookingOther: 0 },
     ],
-    approvalData: {
-      date: '2026-03-05',
-      time: '11:00',
-      name: 'ธนาวุฒิ อนุมัติไว (Admin)',
-      email: 'thanawut.a@omodajaecoo.co.th',
-      phone: '02-111-2233',
-    },
   },
   {
     id: 203,
     docNo: 'RPT-AGE-2026-003',
+    dealerCode: 'AGE',
+    dealerName: 'โอโมดา แอนด์ เจคู เอจีอี ออโต้ แกลเลอรี่ สาขารามคำแหง',
     planDocNo: null,
     month: 'มีนาคม',
     year: '2569',
@@ -363,7 +558,7 @@ const getReportTotals = (report) => {
 };
 
 const buildActivityList = (plans, reports) => {
-  const submitted = (reports || []).filter((r) => r.planDocNo && (r.status === 'Approved' || r.status === 'Pending'));
+  const submitted = (reports || []).filter((r) => r.planDocNo && r.status === 'Approved');
   return submitted
     .map((report) => {
       const plan = (plans || []).find((p) => p.docNo === report.planDocNo);
@@ -687,10 +882,11 @@ const ActivitySectionForm = ({
   );
 };
 
-const MonthlyPlanFormView = ({ onBack, initialPlan = null }) => {
+const MonthlyPlanFormView = ({ onBack, initialPlan = null, isAdmin = false }) => {
   const isEditMode = !!initialPlan;
   const isApproved = initialPlan?.status === 'Approved';
-  const isReadOnly = isApproved;
+  const isPending = initialPlan?.status === 'Pending';
+  const isReadOnly = isApproved || isPending || isAdmin;
 
   const [selectedMonth, setSelectedMonth] = useState(initialPlan?.month || MONTHS_TH[0]);
   const [selectedYear, setSelectedYear] = useState(initialPlan?.year || '2569');
@@ -773,11 +969,11 @@ const MonthlyPlanFormView = ({ onBack, initialPlan = null }) => {
         </div>
       </div>
 
-      {isApproved && (
+      {(isApproved || isPending || isAdmin) && (
         <div className="bg-emerald-50 border-l-4 border-emerald-500 p-3 flex items-center gap-3 shadow-sm rounded-sm font-sans font-black">
           <Lock className="text-emerald-600" size={18} />
           <p className="text-xs font-bold text-emerald-800 uppercase tracking-tight">
-            Read-Only: แผนงานที่อนุมัติแล้วไม่สามารถแก้ไขได้
+            {isAdmin ? 'Read-Only: โหมด Admin — ไม่สามารถแก้ไขข้อมูลได้' : isPending ? 'Read-Only: แผนงานที่รออนุมัติไม่สามารถแก้ไขได้' : 'Read-Only: แผนงานที่อนุมัติแล้วไม่สามารถแก้ไขได้'}
           </p>
         </div>
       )}
@@ -869,9 +1065,17 @@ const MonthlyPlanFormView = ({ onBack, initialPlan = null }) => {
           onClick={onBack}
           className="px-10 py-2.5 border border-slate-300 bg-white hover:bg-slate-100 text-slate-500 font-bold text-xs uppercase transition-all rounded-sm font-black"
         >
-          {isReadOnly ? 'ปิดหน้าต่าง' : 'ยกเลิก'}
+          {isAdmin ? 'ยกเลิก' : isReadOnly ? 'ปิดหน้าต่าง' : 'ยกเลิก'}
         </button>
-        {!isReadOnly && (
+        {isAdmin && initialPlan && initialPlan.status !== 'Approved' && (
+          <button
+            onClick={onBack}
+            className="px-10 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs uppercase flex items-center gap-2 shadow-md transition-all active:scale-95 rounded-sm"
+          >
+            <CheckCircle2 size={18} /> Approved
+          </button>
+        )}
+        {!isReadOnly && !isAdmin && (
           <>
             <button
               onClick={onBack}
@@ -900,13 +1104,15 @@ const readFileAsDataURL = (file) =>
     reader.readAsDataURL(file);
   });
 
-const ContentFormView = ({ onBack, onPreviewImage, initialReq = null }) => {
+const ContentFormView = ({ onBack, onPreviewImage, initialReq = null, isAdmin = false, onApprove, onReject }) => {
   const isEditMode = !!initialReq;
   const isDraft = initialReq?.status === 'Draft';
-  const isReadOnly = initialReq && initialReq.status !== 'Draft';
+  const isReadOnly = (initialReq && initialReq.status !== 'Draft') || isAdmin;
   const isRejected = initialReq?.status === 'Rejected';
+  const isPending = initialReq?.status === 'Pending';
 
   const [uploadedFiles, setUploadedFiles] = useState(initialReq?.files ? [...initialReq.files] : []);
+  const [rejectReasonText, setRejectReasonText] = useState('');
   const fileInputRef = useRef(null);
 
   const acceptTypes = 'image/png,image/jpeg,image/jpg';
@@ -965,6 +1171,15 @@ const ContentFormView = ({ onBack, onPreviewImage, initialReq = null }) => {
           </div>
         </div>
       </div>
+
+      {isReadOnly && !isAdmin && (isPending || initialReq?.status === 'Approved') && (
+        <div className="bg-emerald-50 border-l-4 border-emerald-500 p-3 flex items-center gap-3 shadow-sm rounded-sm font-sans font-black">
+          <Lock className="text-emerald-600" size={18} />
+          <p className="text-xs font-bold text-emerald-800 uppercase tracking-tight">
+            {isPending ? 'Read-Only: คำขอที่รออนุมัติไม่สามารถแก้ไขได้' : 'Read-Only: คำขอที่อนุมัติแล้วไม่สามารถแก้ไขได้'}
+          </p>
+        </div>
+      )}
 
       {isRejected && initialReq.rejectData && (
         <section className="bg-white border border-slate-300 overflow-hidden shadow-sm animate-in fade-in duration-500 rounded-sm font-sans font-black">
@@ -1133,14 +1348,50 @@ const ContentFormView = ({ onBack, onPreviewImage, initialReq = null }) => {
         </div>
       </section>
 
+      {isAdmin && isPending && (
+        <section className="bg-white border border-slate-300 overflow-hidden rounded-sm font-sans font-black">
+          <div className="bg-rose-600 px-5 py-2 flex items-center gap-2.5 text-white font-black font-sans">
+            <AlertCircle size={16} />
+            <h3 className="text-[11px] uppercase tracking-tight font-sans">เหตุผลการปฏิเสธ (กรณี Rejected)</h3>
+          </div>
+          <div className="p-5">
+            <textarea
+              value={rejectReasonText}
+              onChange={(e) => setRejectReasonText(e.target.value)}
+              placeholder="กรอกเหตุผลการไม่อนุมัติ..."
+              className="w-full border-2 border-slate-300 rounded-sm px-3 py-2 text-sm font-bold min-h-[80px] focus:border-rose-500 outline-none"
+              rows={3}
+            />
+          </div>
+        </section>
+      )}
+
       <div className="flex justify-end gap-3 pt-4 font-sans font-black">
         <button
           onClick={onBack}
           className="px-10 py-2.5 border border-slate-300 bg-white hover:bg-slate-100 text-slate-500 font-bold text-xs uppercase transition-all rounded-sm"
         >
-          {isReadOnly ? 'ปิดหน้าต่าง' : 'ยกเลิก'}
+          {isAdmin ? 'ยกเลิก' : isReadOnly ? 'ปิดหน้าต่าง' : 'ยกเลิก'}
         </button>
-        {!isReadOnly && (
+        {isAdmin && isPending && (
+          <>
+            <button
+              type="button"
+              onClick={() => onReject?.(rejectReasonText)}
+              className="px-10 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-black text-xs uppercase flex items-center gap-2 shadow-md rounded-sm"
+            >
+              <UserX size={18} /> Rejected
+            </button>
+            <button
+              type="button"
+              onClick={() => onApprove?.()}
+              className="px-10 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs uppercase flex items-center gap-2 shadow-md rounded-sm"
+            >
+              <CheckCircle2 size={18} /> Approved
+            </button>
+          </>
+        )}
+        {!isReadOnly && !isAdmin && (
           <>
             <button
               onClick={onBack}
@@ -1161,174 +1412,707 @@ const ContentFormView = ({ onBack, onPreviewImage, initialReq = null }) => {
   );
 };
 
-const MonthlyListingView = ({ plans, onCreateNew, onOpenDetail }) => (
-  <div className="space-y-4 animate-in fade-in duration-300 font-sans font-black">
-    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-      <h2 className="text-xl font-black text-slate-800 uppercase tracking-tight font-sans">Monthly Marketing Plans</h2>
-      <button
-        onClick={onCreateNew}
-        className="flex items-center justify-center gap-2 bg-slate-900 hover:bg-black text-white px-4 py-2 font-bold text-sm shadow-sm transition-all active:scale-95 rounded-sm"
-      >
-        <Plus size={18} /> สร้างแผนงานใหม่
-      </button>
+const LISTING_PER_PAGE = 10;
+
+const MonthlyListingView = ({ plans = [], onCreateNew, onOpenDetail, showDealerColumn = false }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const list = Array.isArray(plans) ? plans : [];
+  const totalPages = Math.max(1, Math.ceil(list.length / LISTING_PER_PAGE));
+  const page = Math.min(Math.max(1, currentPage), totalPages);
+  const start = (page - 1) * LISTING_PER_PAGE;
+  const paginated = list.slice(start, start + LISTING_PER_PAGE);
+  const goToPage = (p) => setCurrentPage(Math.max(1, Math.min(p, totalPages)));
+
+  return (
+    <div className="space-y-4 animate-in fade-in duration-300 font-sans font-black">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <h2 className="text-xl font-black text-slate-800 uppercase tracking-tight font-sans">Monthly Marketing Plans</h2>
+        {!showDealerColumn && (
+          <button
+            onClick={onCreateNew}
+            className="flex items-center justify-center gap-2 bg-slate-900 hover:bg-black text-white px-4 py-2 font-bold text-sm shadow-sm transition-all active:scale-95 rounded-sm"
+          >
+            <Plus size={18} /> สร้างแผนงานใหม่
+          </button>
+        )}
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 font-sans font-black">
+        <SummaryCard title="Leads ทั้งหมด" value="550" icon={<Target className="text-indigo-600 w-5 h-5 font-sans" />} />
+        <SummaryCard title="ยอด Booking" value="35" icon={<CheckCircle2 className="text-emerald-600 w-5 h-5 font-sans" />} />
+        <SummaryCard title="งบประมาณที่ใช้" value="฿830,000" icon={<DollarSign className="text-amber-600 w-5 h-5 font-sans" />} />
+      </div>
+      <div className="bg-white border border-slate-300 overflow-hidden shadow-sm rounded-sm font-sans font-black">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-sm font-sans font-black">
+            <thead>
+              <tr className="bg-slate-100 border-b border-slate-300 text-[11px]">
+                {showDealerColumn && (
+                  <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans min-w-[12rem]">Dealer Code / Name</th>
+                )}
+                <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans">Doc No.</th>
+                <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans">เดือน/ปี</th>
+                <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans text-center">สถานะ</th>
+                <th className="px-5 py-2.5 font-black text-center text-slate-500 tracking-tight font-sans">Leads Target</th>
+                <th className="px-5 py-2.5 font-black text-center text-slate-500 tracking-tight font-sans">Booking Target</th>
+                <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans">งบประมาณรวม</th>
+                <th className="px-5 py-2.5 font-sans"></th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-200">
+              {paginated.map((plan) => (
+                <tr
+                  key={plan.id}
+                  className="hover:bg-slate-50 transition-colors group cursor-pointer font-sans font-black"
+                  onClick={() => onOpenDetail(plan)}
+                >
+                  {showDealerColumn && (
+                    <td className="px-5 py-2.5 font-bold text-slate-700">
+                      <span className="font-black text-indigo-600">{plan.dealerCode || '—'}</span>
+                      <span className="text-slate-400 mx-1">/</span>
+                      <span className="text-slate-800">{plan.dealerName || '—'}</span>
+                    </td>
+                  )}
+                  <td className="px-5 py-2.5 font-black text-indigo-600 tracking-tight">{plan.docNo}</td>
+                  <td className="px-5 py-2.5 font-bold text-slate-700">
+                    {plan.month} {plan.year}
+                  </td>
+                  <td className="px-5 py-2.5 text-center font-black">
+                    <StatusBadge status={plan.status} />
+                  </td>
+                  <td className="px-5 py-2.5 text-slate-600 text-center font-bold">{plan.leads}</td>
+                  <td className="px-5 py-2.5 text-slate-600 text-center font-bold">{plan.bookings}</td>
+                  <td className="px-5 py-2.5 font-black text-slate-900">฿{plan.totalBudget.toLocaleString()}</td>
+                  <td className="px-5 py-2.5 text-right font-black">
+                    <div className="p-1 text-slate-400 group-hover:text-indigo-600 transition-all inline-block">
+                      <ChevronRight size={18} />
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {list.length > 0 && (
+          <div className="flex flex-wrap items-center justify-between gap-2 px-5 py-3 border-t border-slate-200 bg-slate-50">
+            <span className="text-xs font-bold text-slate-500 uppercase tracking-tight">
+              แสดง {start + 1}–{start + paginated.length} จาก {list.length} รายการ (หน้า {page}/{totalPages})
+            </span>
+            {totalPages > 1 && (
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => goToPage(page - 1)}
+                  disabled={page <= 1}
+                  className="p-2 rounded-sm border border-slate-300 bg-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-100 font-black"
+                  aria-label="หน้าก่อน"
+                >
+                  <ChevronLeft size={18} />
+                </button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1)
+                  .filter((p) => p === 1 || p === totalPages || (p >= page - 2 && p <= page + 2))
+                  .reduce((acc, p, i, arr) => {
+                    if (i > 0 && arr[i - 1] !== p - 1) acc.push('…');
+                    acc.push(p);
+                    return acc;
+                  }, [])
+                  .map((p, i) =>
+                    p === '…' ? (
+                      <span key={`mp-ellip-${i}`} className="px-2 text-slate-400 font-bold">
+                        …
+                      </span>
+                    ) : (
+                      <button
+                        key={p}
+                        type="button"
+                        onClick={() => goToPage(p)}
+                        className={`min-w-[2rem] py-1.5 px-2 rounded-sm border text-xs font-black ${
+                          p === page
+                            ? 'bg-indigo-600 border-indigo-600 text-white'
+                            : 'border-slate-300 bg-white hover:bg-slate-100 text-slate-700'
+                        }`}
+                      >
+                        {p}
+                      </button>
+                    )
+                  )}
+                <button
+                  type="button"
+                  onClick={() => goToPage(page + 1)}
+                  disabled={page >= totalPages}
+                  className="p-2 rounded-sm border border-slate-300 bg-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-100 font-black"
+                  aria-label="หน้าถัดไป"
+                >
+                  <ChevronRight size={18} />
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 font-sans font-black">
-      <SummaryCard title="Leads ทั้งหมด" value="550" icon={<Target className="text-indigo-600 w-5 h-5 font-sans" />} />
-      <SummaryCard title="ยอด Booking" value="35" icon={<CheckCircle2 className="text-emerald-600 w-5 h-5 font-sans" />} />
-      <SummaryCard title="งบประมาณที่ใช้" value="฿830,000" icon={<DollarSign className="text-amber-600 w-5 h-5 font-sans" />} />
-    </div>
-    <div className="bg-white border border-slate-300 overflow-hidden shadow-sm rounded-sm font-sans font-black">
-      <div className="overflow-x-auto">
+  );
+};
+
+const ContentListingView = ({ requests = [], onCreateNew, onOpenDetail, showDealerColumn = false }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const list = Array.isArray(requests) ? requests : [];
+  const totalPages = Math.max(1, Math.ceil(list.length / LISTING_PER_PAGE));
+  const page = Math.min(Math.max(1, currentPage), totalPages);
+  const start = (page - 1) * LISTING_PER_PAGE;
+  const paginated = list.slice(start, start + LISTING_PER_PAGE);
+  const goToPage = (p) => setCurrentPage(Math.max(1, Math.min(p, totalPages)));
+
+  return (
+    <div className="space-y-4 animate-in fade-in duration-300 font-sans font-black">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 font-sans font-black">
+        <h2 className="text-xl font-black text-slate-800 uppercase tracking-tight font-sans">Content Approval Listing</h2>
+        {!showDealerColumn && (
+          <button
+            onClick={onCreateNew}
+            className="flex items-center justify-center gap-2 bg-slate-900 hover:bg-black text-white px-4 py-2 font-bold text-sm shadow-sm transition-all active:scale-95 rounded-sm"
+          >
+            <Plus size={18} /> สร้างคำขอใหม่
+          </button>
+        )}
+      </div>
+      <div className="bg-white border border-slate-300 overflow-hidden shadow-sm rounded-sm font-sans font-black">
         <table className="w-full text-left text-sm font-sans font-black">
           <thead>
-            <tr className="bg-slate-100 border-b border-slate-300 text-[11px]">
-              <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans">Doc No.</th>
-              <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans">เดือน/ปี</th>
-              <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans text-center">สถานะ</th>
-              <th className="px-5 py-2.5 font-black text-center text-slate-500 tracking-tight font-sans">Leads Target</th>
-              <th className="px-5 py-2.5 font-black text-center text-slate-500 tracking-tight font-sans">Booking Target</th>
-              <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans">งบประมาณรวม</th>
+            <tr className="bg-slate-100 border-b border-slate-300 text-[11px] font-sans font-black">
+              {showDealerColumn && (
+                <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans min-w-[12rem]">Dealer Code / Name</th>
+              )}
+              <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans">หัวข้อการขออนุมัติ</th>
+              <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight text-center font-sans">วันที่ส่ง</th>
+              <th className="px-5 py-2.5 font-black text-center text-slate-500 tracking-tight font-sans">จำนวนไฟล์ภาพ</th>
+              <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans">สถานะ</th>
               <th className="px-5 py-2.5 font-sans"></th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200">
-            {plans.map((plan) => (
+            {paginated.map((req) => (
               <tr
-                key={plan.id}
+                key={req.id}
                 className="hover:bg-slate-50 transition-colors group cursor-pointer font-sans font-black"
-                onClick={() => onOpenDetail(plan)}
+                onClick={() => onOpenDetail(req)}
               >
-                <td className="px-5 py-2.5 font-black text-indigo-600 tracking-tight">{plan.docNo}</td>
-                <td className="px-5 py-2.5 font-bold text-slate-700">
-                  {plan.month} {plan.year}
+                {showDealerColumn && (
+                  <td className="px-5 py-2.5 font-bold text-slate-700">
+                    <span className="font-black text-indigo-600">{req.dealerCode || '—'}</span>
+                    <span className="text-slate-400 mx-1">/</span>
+                    <span className="text-slate-800">{req.dealerName || '—'}</span>
+                  </td>
+                )}
+                <td className="px-5 py-2.5 font-bold text-slate-700 tracking-tight">{req.title}</td>
+                <td className="px-5 py-2.5 text-slate-500 text-center">{req.date}</td>
+                <td className="px-5 py-2.5 text-slate-600 text-center font-bold tracking-tight">{req.files?.length ?? 0}</td>
+                <td className="px-5 py-2.5 font-black">
+                  <StatusBadge status={req.status} />
                 </td>
-                <td className="px-5 py-2.5 text-center font-black">
-                  <StatusBadge status={plan.status} />
-                </td>
-                <td className="px-5 py-2.5 text-slate-600 text-center font-bold">{plan.leads}</td>
-                <td className="px-5 py-2.5 text-slate-600 text-center font-bold">{plan.bookings}</td>
-                <td className="px-5 py-2.5 font-black text-slate-900">฿{plan.totalBudget.toLocaleString()}</td>
                 <td className="px-5 py-2.5 text-right font-black">
                   <div className="p-1 text-slate-400 group-hover:text-indigo-600 transition-all inline-block">
-                    <ChevronRight size={18} />
+                    <ChevronRight size={16} />
                   </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+        {list.length > 0 && (
+          <div className="flex flex-wrap items-center justify-between gap-2 px-5 py-3 border-t border-slate-200 bg-slate-50">
+            <span className="text-xs font-bold text-slate-500 uppercase tracking-tight">
+              แสดง {start + 1}–{start + paginated.length} จาก {list.length} รายการ (หน้า {page}/{totalPages})
+            </span>
+            {totalPages > 1 && (
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => goToPage(page - 1)}
+                  disabled={page <= 1}
+                  className="p-2 rounded-sm border border-slate-300 bg-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-100 font-black"
+                  aria-label="หน้าก่อน"
+                >
+                  <ChevronLeft size={18} />
+                </button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1)
+                  .filter((p) => p === 1 || p === totalPages || (p >= page - 2 && p <= page + 2))
+                  .reduce((acc, p, i, arr) => {
+                    if (i > 0 && arr[i - 1] !== p - 1) acc.push('…');
+                    acc.push(p);
+                    return acc;
+                  }, [])
+                  .map((p, i) =>
+                    p === '…' ? (
+                      <span key={`ct-ellip-${i}`} className="px-2 text-slate-400 font-bold">
+                        …
+                      </span>
+                    ) : (
+                      <button
+                        key={p}
+                        type="button"
+                        onClick={() => goToPage(p)}
+                        className={`min-w-[2rem] py-1.5 px-2 rounded-sm border text-xs font-black ${
+                          p === page
+                            ? 'bg-indigo-600 border-indigo-600 text-white'
+                            : 'border-slate-300 bg-white hover:bg-slate-100 text-slate-700'
+                        }`}
+                      >
+                        {p}
+                      </button>
+                    )
+                  )}
+                <button
+                  type="button"
+                  onClick={() => goToPage(page + 1)}
+                  disabled={page >= totalPages}
+                  className="p-2 rounded-sm border border-slate-300 bg-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-100 font-black"
+                  aria-label="หน้าถัดไป"
+                >
+                  <ChevronRight size={18} />
+                </button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
-  </div>
-);
+  );
+};
 
-const ContentListingView = ({ requests, onCreateNew, onOpenDetail }) => (
-  <div className="space-y-4 animate-in fade-in duration-300 font-sans font-black">
-    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 font-sans font-black">
-      <h2 className="text-xl font-black text-slate-800 uppercase tracking-tight font-sans">Content Approval Listing</h2>
-      <button
-        onClick={onCreateNew}
-        className="flex items-center justify-center gap-2 bg-slate-900 hover:bg-black text-white px-4 py-2 font-bold text-sm shadow-sm transition-all active:scale-95 rounded-sm"
-      >
-        <Plus size={18} /> สร้างคำขอใหม่
-      </button>
-    </div>
-    <div className="bg-white border border-slate-300 overflow-hidden shadow-sm rounded-sm font-sans font-black">
-      <table className="w-full text-left text-sm font-sans font-black">
-        <thead>
-          <tr className="bg-slate-100 border-b border-slate-300 text-[11px] font-sans font-black">
-            <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans">หัวข้อการขออนุมัติ</th>
-            <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight text-center font-sans">วันที่ส่ง</th>
-            <th className="px-5 py-2.5 font-black text-center text-slate-500 tracking-tight font-sans">จำนวนไฟล์ภาพ</th>
-            <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans">สถานะ</th>
-            <th className="px-5 py-2.5 font-sans"></th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-slate-200">
-          {requests.map((req) => (
-            <tr
-              key={req.id}
-              className="hover:bg-slate-50 transition-colors group cursor-pointer font-sans font-black"
-              onClick={() => onOpenDetail(req)}
-            >
-              <td className="px-5 py-2.5 font-bold text-slate-700 tracking-tight">{req.title}</td>
-              <td className="px-5 py-2.5 text-slate-500 text-center">{req.date}</td>
-              <td className="px-5 py-2.5 text-slate-600 text-center font-bold tracking-tight">{req.files.length}</td>
-              <td className="px-5 py-2.5 font-black">
-                <StatusBadge status={req.status} />
-              </td>
-              <td className="px-5 py-2.5 text-right font-black">
-                <div className="p-1 text-slate-400 group-hover:text-indigo-600 transition-all inline-block">
-                  <ChevronRight size={16} />
-                </div>
-              </td>
+// --- Dealer Management (Admin) ---
+const DEALER_PAGE_SIZE = 10;
+
+const DealerManagementView = ({ dealers = [], onAddDealer, onEditDealer }) => {
+  const [search, setSearch] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const list = Array.isArray(dealers) ? dealers : [];
+  const filtered = list.filter(
+    (d) =>
+      (d.dealerName || '').toLowerCase().includes(search.toLowerCase()) ||
+      (d.dealerCode || '').toLowerCase().includes(search.toLowerCase())
+  );
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / DEALER_PAGE_SIZE));
+  const page = Math.min(Math.max(1, currentPage), totalPages);
+  const start = (page - 1) * DEALER_PAGE_SIZE;
+  const paginated = filtered.slice(start, start + DEALER_PAGE_SIZE);
+
+  const goToPage = (p) => setCurrentPage(Math.max(1, Math.min(p, totalPages)));
+
+  return (
+    <div className="space-y-4 animate-in fade-in duration-300 font-sans font-black">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <h2 className="text-xl font-black text-slate-800 uppercase tracking-tight font-sans">Dealer Management</h2>
+        {onAddDealer && (
+          <button
+            type="button"
+            onClick={onAddDealer}
+            className="flex items-center justify-center gap-2 bg-slate-900 hover:bg-black text-white px-4 py-2 font-bold text-sm shadow-sm transition-all active:scale-95 rounded-sm"
+          >
+            <Plus size={18} /> เพิ่ม Dealer
+          </button>
+        )}
+      </div>
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+        <input
+          type="text"
+          placeholder="ค้นหา Dealer name หรือ Code..."
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setCurrentPage(1);
+          }}
+          className="flex-1 max-w-xs border-2 border-slate-300 rounded-sm px-3 py-2 text-sm font-bold focus:border-indigo-500 outline-none"
+        />
+        <span className="text-xs font-bold text-slate-500 uppercase tracking-tight">
+          ทั้งหมด {filtered.length} รายการ
+        </span>
+      </div>
+      <div className="bg-white border border-slate-300 overflow-hidden shadow-sm rounded-sm font-sans font-black">
+        <table className="w-full text-left text-sm font-sans font-black">
+          <thead>
+            <tr className="bg-slate-100 border-b border-slate-300 text-[11px]">
+              <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans w-24">ลำดับ</th>
+              <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans">Dealer Name</th>
+              <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans w-32">Dealer Code</th>
+              {onEditDealer && <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans w-20 text-center">จัดการ</th>}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="divide-y divide-slate-200">
+            {paginated.map((d, idx) => (
+              <tr key={d.id} className="hover:bg-slate-50 transition-colors font-sans font-black">
+                <td className="px-5 py-2.5 font-bold text-slate-500 tabular-nums">{start + idx + 1}</td>
+                <td className="px-5 py-2.5 font-bold text-slate-800">{d.dealerName || '—'}</td>
+                <td className="px-5 py-2.5 font-black text-indigo-600 tracking-tight">{d.dealerCode || '—'}</td>
+                {onEditDealer && (
+                  <td className="px-5 py-2.5 text-center">
+                    <button
+                      type="button"
+                      onClick={(e) => { e.stopPropagation(); onEditDealer(d); }}
+                      className="inline-flex items-center justify-center gap-1 px-2 py-1.5 border border-slate-300 bg-white hover:bg-indigo-50 hover:border-indigo-300 text-slate-600 hover:text-indigo-700 font-bold text-xs rounded-sm transition-colors"
+                      title="แก้ไข"
+                    >
+                      <FileEdit size={14} /> แก้ไข
+                    </button>
+                  </td>
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        {filtered.length > 0 && (
+          <div className="flex flex-wrap items-center justify-between gap-2 px-5 py-3 border-t border-slate-200 bg-slate-50">
+            <span className="text-xs font-bold text-slate-500 uppercase tracking-tight">
+              แสดง {start + 1}–{start + paginated.length} จาก {filtered.length} รายการ (หน้า {page}/{totalPages})
+            </span>
+            {totalPages > 1 && (
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => goToPage(page - 1)}
+                  disabled={page <= 1}
+                  className="p-2 rounded-sm border border-slate-300 bg-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-100 font-black"
+                  aria-label="หน้าก่อน"
+                >
+                  <ChevronLeft size={18} />
+                </button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1)
+                  .filter((p) => p === 1 || p === totalPages || (p >= page - 2 && p <= page + 2))
+                  .reduce((acc, p, i, arr) => {
+                    if (i > 0 && arr[i - 1] !== p - 1) acc.push('…');
+                    acc.push(p);
+                    return acc;
+                  }, [])
+                  .map((p, i) =>
+                    p === '…' ? (
+                      <span key={`ellip-${i}`} className="px-2 text-slate-400 font-bold">…</span>
+                    ) : (
+                      <button
+                        key={p}
+                        type="button"
+                        onClick={() => goToPage(p)}
+                        className={`min-w-[2rem] py-1.5 px-2 rounded-sm border text-xs font-black ${
+                          p === page
+                            ? 'bg-indigo-600 border-indigo-600 text-white'
+                            : 'border-slate-300 bg-white hover:bg-slate-100 text-slate-700'
+                      }`}
+                    >
+                      {p}
+                    </button>
+                  )
+                )}
+                <button
+                  type="button"
+                  onClick={() => goToPage(page + 1)}
+                  disabled={page >= totalPages}
+                  className="p-2 rounded-sm border border-slate-300 bg-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-100 font-black"
+                  aria-label="หน้าถัดไป"
+                >
+                  <ChevronRight size={18} />
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
+};
+
+// --- User Management (Admin) ---
+const USER_PAGE_SIZE = 10;
+
+const UserManagementView = ({ users = [], onAddUser, onEditUser }) => {
+  const [search, setSearch] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const list = Array.isArray(users) ? users : [];
+  const filtered = list.filter(
+    (u) =>
+      (u.name || '').toLowerCase().includes(search.toLowerCase()) ||
+      (u.email || '').toLowerCase().includes(search.toLowerCase()) ||
+      (u.phone || '').toLowerCase().includes(search.toLowerCase()) ||
+      (u.role || '').toLowerCase().includes(search.toLowerCase())
+  );
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / USER_PAGE_SIZE));
+  const page = Math.min(Math.max(1, currentPage), totalPages);
+  const start = (page - 1) * USER_PAGE_SIZE;
+  const paginated = filtered.slice(start, start + USER_PAGE_SIZE);
+
+  const goToPage = (p) => setCurrentPage(Math.max(1, Math.min(p, totalPages)));
+
+  return (
+    <div className="space-y-4 animate-in fade-in duration-300 font-sans font-black">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <h2 className="text-xl font-black text-slate-800 uppercase tracking-tight font-sans">User Management</h2>
+        {onAddUser && (
+          <button
+            type="button"
+            onClick={onAddUser}
+            className="flex items-center justify-center gap-2 bg-slate-900 hover:bg-black text-white px-4 py-2 font-bold text-sm shadow-sm transition-all active:scale-95 rounded-sm"
+          >
+            <Plus size={18} /> เพิ่ม User
+          </button>
+        )}
+      </div>
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+        <input
+          type="text"
+          placeholder="ค้นหา Name, Email, Phone, Role..."
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setCurrentPage(1);
+          }}
+          className="flex-1 max-w-xs border-2 border-slate-300 rounded-sm px-3 py-2 text-sm font-bold focus:border-indigo-500 outline-none"
+        />
+        <span className="text-xs font-bold text-slate-500 uppercase tracking-tight">
+          ทั้งหมด {filtered.length} รายการ
+        </span>
+      </div>
+      <div className="bg-white border border-slate-300 overflow-hidden shadow-sm rounded-sm font-sans font-black">
+        <table className="w-full text-left text-sm font-sans font-black">
+          <thead>
+            <tr className="bg-slate-100 border-b border-slate-300 text-[11px]">
+              <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans w-24">ลำดับ</th>
+              <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans">Name</th>
+              <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans">Email</th>
+              <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans w-32">Phone</th>
+              <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans w-24">Role</th>
+              <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans">Dealer (Code / Name)</th>
+              {onEditUser && <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans w-20 text-center">จัดการ</th>}
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-slate-200">
+            {paginated.map((u, idx) => (
+              <tr key={u.id} className="hover:bg-slate-50 transition-colors font-sans font-black">
+                <td className="px-5 py-2.5 font-bold text-slate-500 tabular-nums">{start + idx + 1}</td>
+                <td className="px-5 py-2.5 font-bold text-slate-800">{u.name || '—'}</td>
+                <td className="px-5 py-2.5 font-bold text-slate-700">{u.email || '—'}</td>
+                <td className="px-5 py-2.5 font-bold text-slate-700">{u.phone || '—'}</td>
+                <td className="px-5 py-2.5">
+                  <span
+                    className={`inline-flex px-2 py-0.5 text-[10px] font-black uppercase rounded-sm ${
+                      u.role === 'admin' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-indigo-50 text-indigo-700 border border-indigo-200'
+                    }`}
+                  >
+                    {u.role === 'admin' ? 'Admin' : 'Dealer'}
+                  </span>
+                </td>
+                <td className="px-5 py-2.5 font-bold text-slate-700 text-[11px]">
+                  {u.role === 'dealer' ? (u.dealerCode || '') + (u.dealerName ? ` / ${u.dealerName}` : '') || '—' : '—'}
+                </td>
+                {onEditUser && (
+                  <td className="px-5 py-2.5 text-center">
+                    <button
+                      type="button"
+                      onClick={(e) => { e.stopPropagation(); onEditUser(u); }}
+                      className="inline-flex items-center justify-center gap-1 px-2 py-1.5 border border-slate-300 bg-white hover:bg-indigo-50 hover:border-indigo-300 text-slate-600 hover:text-indigo-700 font-bold text-xs rounded-sm transition-colors"
+                      title="แก้ไข"
+                    >
+                      <FileEdit size={14} /> แก้ไข
+                    </button>
+                  </td>
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        {filtered.length > 0 && (
+          <div className="flex flex-wrap items-center justify-between gap-2 px-5 py-3 border-t border-slate-200 bg-slate-50">
+            <span className="text-xs font-bold text-slate-500 uppercase tracking-tight">
+              แสดง {start + 1}–{start + paginated.length} จาก {filtered.length} รายการ (หน้า {page}/{totalPages})
+            </span>
+            {totalPages > 1 && (
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => goToPage(page - 1)}
+                  disabled={page <= 1}
+                  className="p-2 rounded-sm border border-slate-300 bg-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-100 font-black"
+                  aria-label="หน้าก่อน"
+                >
+                  <ChevronLeft size={18} />
+                </button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1)
+                  .filter((p) => p === 1 || p === totalPages || (p >= page - 2 && p <= page + 2))
+                  .reduce((acc, p, i, arr) => {
+                    if (i > 0 && arr[i - 1] !== p - 1) acc.push('…');
+                    acc.push(p);
+                    return acc;
+                  }, [])
+                  .map((p, i) =>
+                    p === '…' ? (
+                      <span key={`u-ellip-${i}`} className="px-2 text-slate-400 font-bold">…</span>
+                    ) : (
+                      <button
+                        key={p}
+                        type="button"
+                        onClick={() => goToPage(p)}
+                        className={`min-w-[2rem] py-1.5 px-2 rounded-sm border text-xs font-black ${
+                          p === page ? 'bg-indigo-600 border-indigo-600 text-white' : 'border-slate-300 bg-white hover:bg-slate-100 text-slate-700'
+                        }`}
+                      >
+                        {p}
+                      </button>
+                    )
+                  )}
+                <button
+                  type="button"
+                  onClick={() => goToPage(page + 1)}
+                  disabled={page >= totalPages}
+                  className="p-2 rounded-sm border border-slate-300 bg-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-100 font-black"
+                  aria-label="หน้าถัดไป"
+                >
+                  <ChevronRight size={18} />
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
 
 // --- Report & Claim ---
-const ReportClaimListingView = ({ reports, onCreateNew, onOpenDetail }) => (
-  <div className="space-y-4 animate-in fade-in duration-300 font-sans font-black">
-    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-      <h2 className="text-xl font-black text-slate-800 uppercase tracking-tight font-sans">Report & Claim</h2>
-      <button
-        onClick={onCreateNew}
-        className="flex items-center justify-center gap-2 bg-slate-900 hover:bg-black text-white px-4 py-2 font-bold text-sm shadow-sm transition-all active:scale-95 rounded-sm"
-      >
-        <Plus size={18} /> สร้างรายงานใหม่
-      </button>
-    </div>
-    <div className="bg-white border border-slate-300 overflow-hidden shadow-sm rounded-sm font-sans font-black">
-      <table className="w-full text-left text-sm font-sans font-black">
-        <thead>
-          <tr className="bg-slate-100 border-b border-slate-300 text-[11px]">
-            <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans">Doc No.</th>
-            <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans">อ้างอิงแผน</th>
-            <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans">เดือน/ปี</th>
-            <th className="px-5 py-2.5 font-black text-center text-slate-500 tracking-tight font-sans">สถานะ</th>
-            <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans">งบใช้จริง</th>
-            <th className="px-5 py-2.5 font-sans"></th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-slate-200">
-          {reports.map((r) => (
-            <tr
-              key={r.id}
-              className="hover:bg-slate-50 transition-colors group cursor-pointer font-sans font-black"
-              onClick={() => onOpenDetail(r)}
-            >
-              <td className="px-5 py-2.5 font-black text-indigo-600 tracking-tight">{r.docNo}</td>
-              <td className="px-5 py-2.5 font-bold text-slate-700">{r.planDocNo || '-'}</td>
-              <td className="px-5 py-2.5 font-bold text-slate-700">
-                {r.month} {r.year}
-              </td>
-              <td className="px-5 py-2.5 font-black">
-                <StatusBadge status={r.status} />
-              </td>
-              <td className="px-5 py-2.5 font-black text-slate-900">
-                ฿{((r.onlineActualBudget || 0) + (r.offlineActualBudget || 0)).toLocaleString()}
-              </td>
-              <td className="px-5 py-2.5 text-right font-black">
-                <div className="p-1 text-slate-400 group-hover:text-indigo-600 transition-all inline-block">
-                  <ChevronRight size={16} />
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  </div>
-);
+const ReportClaimListingView = ({ reports = [], onCreateNew, onOpenDetail, showDealerColumn = false }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const list = Array.isArray(reports) ? reports : [];
+  const totalPages = Math.max(1, Math.ceil(list.length / LISTING_PER_PAGE));
+  const page = Math.min(Math.max(1, currentPage), totalPages);
+  const start = (page - 1) * LISTING_PER_PAGE;
+  const paginated = list.slice(start, start + LISTING_PER_PAGE);
+  const goToPage = (p) => setCurrentPage(Math.max(1, Math.min(p, totalPages)));
 
-const ReportClaimFormView = ({ onBack, onPreviewImage, plans, initialReport = null }) => {
+  return (
+    <div className="space-y-4 animate-in fade-in duration-300 font-sans font-black">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <h2 className="text-xl font-black text-slate-800 uppercase tracking-tight font-sans">Report & Claim</h2>
+        {!showDealerColumn && (
+          <button
+            onClick={onCreateNew}
+            className="flex items-center justify-center gap-2 bg-slate-900 hover:bg-black text-white px-4 py-2 font-bold text-sm shadow-sm transition-all active:scale-95 rounded-sm"
+          >
+            <Plus size={18} /> สร้างรายงานใหม่
+          </button>
+        )}
+      </div>
+      <div className="bg-white border border-slate-300 overflow-hidden shadow-sm rounded-sm font-sans font-black">
+        <table className="w-full text-left text-sm font-sans font-black">
+          <thead>
+            <tr className="bg-slate-100 border-b border-slate-300 text-[11px]">
+              {showDealerColumn && (
+                <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans">Dealer Code / Name</th>
+              )}
+              <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans">Doc No.</th>
+              <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans">อ้างอิงแผน</th>
+              <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans">เดือน/ปี</th>
+              <th className="px-5 py-2.5 font-black text-center text-slate-500 tracking-tight font-sans">สถานะ</th>
+              <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans">งบใช้จริง</th>
+              <th className="px-5 py-2.5 font-sans"></th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-slate-200">
+            {paginated.map((r) => (
+              <tr
+                key={r.id}
+                className="hover:bg-slate-50 transition-colors group cursor-pointer font-sans font-black"
+                onClick={() => onOpenDetail(r)}
+              >
+                {showDealerColumn && (
+                  <td className="px-5 py-2.5 font-bold text-slate-700">
+                    {r.dealerCode || ''} / {r.dealerName || '-'}
+                  </td>
+                )}
+                <td className="px-5 py-2.5 font-black text-indigo-600 tracking-tight">{r.docNo}</td>
+                <td className="px-5 py-2.5 font-bold text-slate-700">{r.planDocNo || '-'}</td>
+                <td className="px-5 py-2.5 font-bold text-slate-700">
+                  {r.month} {r.year}
+                </td>
+                <td className="px-5 py-2.5 font-black">
+                  <StatusBadge status={r.status} />
+                </td>
+                <td className="px-5 py-2.5 font-black text-slate-900">
+                  ฿{((r.onlineActualBudget || 0) + (r.offlineActualBudget || 0)).toLocaleString()}
+                </td>
+                <td className="px-5 py-2.5 text-right font-black">
+                  <div className="p-1 text-slate-400 group-hover:text-indigo-600 transition-all inline-block">
+                    <ChevronRight size={16} />
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        {list.length > 0 && (
+          <div className="flex flex-wrap items-center justify-between gap-2 px-5 py-3 border-t border-slate-200 bg-slate-50">
+            <span className="text-xs font-bold text-slate-500 uppercase tracking-tight">
+              แสดง {start + 1}–{start + paginated.length} จาก {list.length} รายการ (หน้า {page}/{totalPages})
+            </span>
+            {totalPages > 1 && (
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => goToPage(page - 1)}
+                  disabled={page <= 1}
+                  className="p-2 rounded-sm border border-slate-300 bg-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-100 font-black"
+                  aria-label="หน้าก่อน"
+                >
+                  <ChevronLeft size={18} />
+                </button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1)
+                  .filter((p) => p === 1 || p === totalPages || (p >= page - 2 && p <= page + 2))
+                  .reduce((acc, p, i, arr) => {
+                    if (i > 0 && arr[i - 1] !== p - 1) acc.push('…');
+                    acc.push(p);
+                    return acc;
+                  }, [])
+                  .map((p, i) =>
+                    p === '…' ? (
+                      <span key={`rp-ellip-${i}`} className="px-2 text-slate-400 font-bold">
+                        …
+                      </span>
+                    ) : (
+                      <button
+                        key={p}
+                        type="button"
+                        onClick={() => goToPage(p)}
+                        className={`min-w-[2rem] py-1.5 px-2 rounded-sm border text-xs font-black ${
+                          p === page
+                            ? 'bg-indigo-600 border-indigo-600 text-white'
+                            : 'border-slate-300 bg-white hover:bg-slate-100 text-slate-700'
+                        }`}
+                      >
+                        {p}
+                      </button>
+                    )
+                  )}
+                <button
+                  type="button"
+                  onClick={() => goToPage(page + 1)}
+                  disabled={page >= totalPages}
+                  className="p-2 rounded-sm border border-slate-300 bg-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-100 font-black"
+                  aria-label="หน้าถัดไป"
+                >
+                  <ChevronRight size={18} />
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const ReportClaimFormView = ({ onBack, onPreviewImage, plans, initialReport = null, isAdmin = false, onApprove }) => {
   const isEditMode = !!initialReport;
   const isApproved = initialReport?.status === 'Approved';
-  const isReadOnly = isApproved;
+  const isPending = initialReport?.status === 'Pending';
+  const isReadOnly = isApproved || isPending || isAdmin;
 
   const [planDocNo, setPlanDocNo] = useState(initialReport?.planDocNo || '');
   const [onlineActivityType, setOnlineActivityType] = useState(initialReport?.onlineActivityType || '');
@@ -1499,11 +2283,11 @@ const ReportClaimFormView = ({ onBack, onPreviewImage, plans, initialReport = nu
         </div>
       </div>
 
-      {isApproved && (
+      {(isApproved || isPending || isAdmin) && (
         <div className="bg-emerald-50 border-l-4 border-emerald-500 p-3 flex items-center gap-3 shadow-sm rounded-sm font-sans font-black">
           <Lock className="text-emerald-600" size={18} />
           <p className="text-xs font-bold text-emerald-800 uppercase tracking-tight">
-            Read-Only: รายงานที่อนุมัติแล้วไม่สามารถแก้ไขได้
+            {isAdmin ? 'Read-Only: โหมด Admin — ไม่สามารถแก้ไขข้อมูลได้' : isPending ? 'Read-Only: รายงานที่รออนุมัติไม่สามารถแก้ไขได้' : 'Read-Only: รายงานที่อนุมัติแล้วไม่สามารถแก้ไขได้'}
           </p>
         </div>
       )}
@@ -1746,7 +2530,7 @@ const ReportClaimFormView = ({ onBack, onPreviewImage, plans, initialReport = nu
       <section className="bg-white border border-slate-300 overflow-hidden shadow-sm rounded-sm font-sans font-black">
         <div className="bg-indigo-700 px-5 py-2 flex items-center gap-2 text-white font-black font-sans">
           <BarChart3 size={16} />
-          <h3 className="text-[11px] uppercase tracking-tight">Booking Result</h3>
+          <h3 className="text-[11px] uppercase tracking-tight">Booking Resul</h3>
         </div>
         <p className="px-5 pt-2 text-[10px] font-bold text-slate-500 uppercase">Please complete number all the boxes</p>
         <div className="p-5 overflow-x-auto">
@@ -2061,9 +2845,18 @@ const ReportClaimFormView = ({ onBack, onPreviewImage, plans, initialReport = nu
           onClick={onBack}
           className="px-10 py-2.5 border border-slate-300 bg-white hover:bg-slate-100 text-slate-500 font-bold text-xs uppercase rounded-sm"
         >
-          {isReadOnly ? 'ปิดหน้าต่าง' : 'ยกเลิก'}
+          {isAdmin ? 'ยกเลิก' : isReadOnly ? 'ปิดหน้าต่าง' : 'ยกเลิก'}
         </button>
-        {!isReadOnly && (
+        {isAdmin && isPending && (
+          <button
+            type="button"
+            onClick={() => onApprove?.()}
+            className="px-10 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs uppercase flex items-center gap-2 shadow-md rounded-sm"
+          >
+            <CheckCircle2 size={18} /> Approved
+          </button>
+        )}
+        {!isReadOnly && !isAdmin && (
           <>
             <button
               onClick={onBack}
@@ -2115,50 +2908,118 @@ const ProgressBar = ({ target, actual, label }) => {
   );
 };
 
-const ActionActivityListingView = ({ activityList, onOpenDetail }) => (
-  <div className="space-y-4 animate-in fade-in duration-300 font-sans font-black">
-    <h2 className="text-xl font-black text-slate-800 uppercase tracking-tight">Activity Summary</h2>
-    <p className="text-xs font-bold text-slate-500 uppercase">สรุป KPI แผนรายเดือนเทียบกับ Report & Claim (แสดงเมื่อมี Report ส่งแล้วและอ้างอิง Doc No เดียวกัน)</p>
-    <div className="bg-white border border-slate-300 overflow-hidden shadow-sm rounded-sm">
-      <table className="w-full text-left text-sm">
-        <thead>
-          <tr className="bg-slate-100 border-b border-slate-300 text-[11px]">
-            <th className="px-5 py-2.5 font-black uppercase text-slate-500">Doc No.</th>
-            <th className="px-5 py-2.5 font-black uppercase text-slate-500">เดือน/ปี</th>
-            <th className="px-5 py-2.5 font-black uppercase text-slate-500 text-center">สถานะรวม</th>
-            <th className="px-5 py-2.5 w-10"></th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-slate-200">
-          {activityList.length === 0 ? (
-            <tr>
-              <td colSpan={4} className="px-5 py-8 text-center text-slate-400 text-xs font-bold uppercase">
-                ยังไม่มี Report & Claim ที่ส่งแล้วและอ้างอิงแผน — ส่ง Report ที่มี Plan Doc No. ก่อน
-              </td>
+const ActionActivityListingView = ({ activityList = [], onOpenDetail }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const list = Array.isArray(activityList) ? activityList : [];
+  const totalPages = Math.max(1, Math.ceil(list.length / LISTING_PER_PAGE));
+  const page = Math.min(Math.max(1, currentPage), totalPages);
+  const start = (page - 1) * LISTING_PER_PAGE;
+  const paginated = list.slice(start, start + LISTING_PER_PAGE);
+  const goToPage = (p) => setCurrentPage(Math.max(1, Math.min(p, totalPages)));
+
+  return (
+    <div className="space-y-4 animate-in fade-in duration-300 font-sans font-black">
+      <h2 className="text-xl font-black text-slate-800 uppercase tracking-tight">Activity Summary</h2>
+      <p className="text-xs font-bold text-slate-500 uppercase">สรุป KPI แผนรายเดือนเทียบกับ Report & Claim (แสดงเมื่อมี Report ส่งแล้วและอ้างอิง Doc No เดียวกัน)</p>
+      <div className="bg-white border border-slate-300 overflow-hidden shadow-sm rounded-sm">
+        <table className="w-full text-left text-sm">
+          <thead>
+            <tr className="bg-slate-100 border-b border-slate-300 text-[11px]">
+              <th className="px-5 py-2.5 font-black uppercase text-slate-500">Doc No.</th>
+              <th className="px-5 py-2.5 font-black uppercase text-slate-500">เดือน/ปี</th>
+              <th className="px-5 py-2.5 font-black uppercase text-slate-500 text-center">สถานะรวม</th>
+              <th className="px-5 py-2.5 w-10"></th>
             </tr>
-          ) : (
-            activityList.map((item) => (
-              <tr
-                key={item.report.id}
-                className="hover:bg-slate-50 transition-colors cursor-pointer"
-                onClick={() => onOpenDetail(item)}
-              >
-                <td className="px-5 py-2.5 font-black text-indigo-600">{item.plan.docNo}</td>
-                <td className="px-5 py-2.5 font-bold text-slate-700">{item.plan.month} {item.plan.year}</td>
-                <td className="px-5 py-2.5 text-center">
-                  <KpiStatusBadge pass={item.overallPass} />
-                </td>
-                <td className="px-5 py-2.5 text-right">
-                  <div className="p-1 text-slate-400 inline-block"><ChevronRight size={16} /></div>
+          </thead>
+          <tbody className="divide-y divide-slate-200">
+            {list.length === 0 ? (
+              <tr>
+                <td colSpan={4} className="px-5 py-8 text-center text-slate-400 text-xs font-bold uppercase">
+                  ยังไม่มี Report & Claim ที่ส่งแล้วและอ้างอิงแผน — ส่ง Report ที่มี Plan Doc No. ก่อน
                 </td>
               </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+            ) : (
+              paginated.map((item) => (
+                <tr
+                  key={item.report.id}
+                  className="hover:bg-slate-50 transition-colors cursor-pointer"
+                  onClick={() => onOpenDetail(item)}
+                >
+                  <td className="px-5 py-2.5 font-black text-indigo-600">{item.plan.docNo}</td>
+                  <td className="px-5 py-2.5 font-bold text-slate-700">
+                    {item.plan.month} {item.plan.year}
+                  </td>
+                  <td className="px-5 py-2.5 text-center">
+                    <KpiStatusBadge pass={item.overallPass} />
+                  </td>
+                  <td className="px-5 py-2.5 text-right">
+                    <div className="p-1 text-slate-400 inline-block">
+                      <ChevronRight size={16} />
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+        {list.length > 0 && (
+          <div className="flex flex-wrap items-center justify-between gap-2 px-5 py-3 border-t border-slate-200 bg-slate-50">
+            <span className="text-xs font-bold text-slate-500 uppercase tracking-tight">
+              แสดง {start + 1}–{start + paginated.length} จาก {list.length} รายการ (หน้า {page}/{totalPages})
+            </span>
+            {totalPages > 1 && (
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => goToPage(page - 1)}
+                  disabled={page <= 1}
+                  className="p-2 rounded-sm border border-slate-300 bg-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-100 font-black"
+                  aria-label="หน้าก่อน"
+                >
+                  <ChevronLeft size={18} />
+                </button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1)
+                  .filter((p) => p === 1 || p === totalPages || (p >= page - 2 && p <= page + 2))
+                  .reduce((acc, p, i, arr) => {
+                    if (i > 0 && arr[i - 1] !== p - 1) acc.push('…');
+                    acc.push(p);
+                    return acc;
+                  }, [])
+                  .map((p, i) =>
+                    p === '…' ? (
+                      <span key={`as-ellip-${i}`} className="px-2 text-slate-400 font-bold">
+                        …
+                      </span>
+                    ) : (
+                      <button
+                        key={p}
+                        type="button"
+                        onClick={() => goToPage(p)}
+                        className={`min-w-[2rem] py-1.5 px-2 rounded-sm border text-xs font-black ${
+                          p === page ? 'bg-indigo-600 border-indigo-600 text-white' : 'border-slate-300 bg-white hover:bg-slate-100 text-slate-700'
+                        }`}
+                      >
+                        {p}
+                      </button>
+                    )
+                  )}
+                <button
+                  type="button"
+                  onClick={() => goToPage(page + 1)}
+                  disabled={page >= totalPages}
+                  className="p-2 rounded-sm border border-slate-300 bg-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-100 font-black"
+                  aria-label="หน้าถัดไป"
+                >
+                  <ChevronRight size={18} />
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const ActionActivityDetailView = ({ activity, onBack, onDownloadExcel, dealerInfo }) => {
   if (!activity) return null;
@@ -2279,12 +3140,89 @@ const ActionActivityDetailView = ({ activity, onBack, onDownloadExcel, dealerInf
   );
 };
 
+// --- Session ---
+const SESSION_KEY = 'oj_portal_session';
+
+const getStoredSession = () => {
+  try {
+    const raw = sessionStorage.getItem(SESSION_KEY);
+    if (!raw) return null;
+    const data = JSON.parse(raw);
+    if (data?.role === 'dealer' || data?.role === 'admin') return data;
+    return null;
+  } catch {
+    return null;
+  }
+};
+
+const clearSession = () => {
+  sessionStorage.removeItem(SESSION_KEY);
+};
+
+// --- Login View ---
+const LoginView = ({ onLogin }) => (
+  <div className="min-h-screen bg-[#F1F5F9] flex flex-col items-center justify-center p-6 font-sans">
+    <div className="w-full max-w-md space-y-8">
+      <div className="text-center">
+        <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-600 text-white rounded-sm mb-4 shadow-lg">
+          <FileText className="w-8 h-8" />
+        </div>
+        <h1 className="text-2xl font-black text-slate-800 uppercase tracking-tight">OJ Marketing Portal</h1>
+        <p className="text-sm font-bold text-slate-500 mt-2 uppercase tracking-wide">เลือกสิทธิ์การเข้าใช้งาน</p>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <button
+          type="button"
+          onClick={() => onLogin('dealer')}
+          className="flex flex-col items-center justify-center p-8 bg-white border-2 border-slate-300 hover:border-indigo-500 rounded-sm shadow-sm transition-all hover:shadow-md font-black group"
+        >
+          <Store size={40} className="text-indigo-600 mb-3 group-hover:scale-110 transition-transform" />
+          <span className="text-lg uppercase tracking-tight text-slate-800">Dealer</span>
+          <span className="text-[10px] font-bold text-slate-400 uppercase mt-1">ผู้จำหน่าย</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => onLogin('admin')}
+          className="flex flex-col items-center justify-center p-8 bg-white border-2 border-slate-300 hover:border-indigo-500 rounded-sm shadow-sm transition-all hover:shadow-md font-black group"
+        >
+          <ShieldCheck size={40} className="text-emerald-600 mb-3 group-hover:scale-110 transition-transform" />
+          <span className="text-lg uppercase tracking-tight text-slate-800">Admin / Staff</span>
+          <span className="text-[10px] font-bold text-slate-400 uppercase mt-1">อนุมัติ / ตรวจสอบ</span>
+        </button>
+      </div>
+      <p className="text-[10px] font-bold text-slate-400 text-center uppercase tracking-wide">
+        กดออกจากระบบเพื่อเปลี่ยนสิทธิ์
+      </p>
+    </div>
+  </div>
+);
+
 const App = () => {
+  const [session, setSession] = useState(() => getStoredSession());
+  const isLoggedIn = !!session;
+  const userRole = session?.role ?? null;
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [activeMenu, setActiveMenu] = useState('monthly_plan');
   const [view, setView] = useState('listing');
   const [plans] = useState(MOCK_PLANS);
-  const [reports] = useState(MOCK_REPORT_CLAIMS);
+  const [reports, setReports] = useState(MOCK_REPORT_CLAIMS);
+  const [contentRequests, setContentRequests] = useState(MOCK_CONTENT_REQUESTS);
+  const [dealers, setDealers] = useState(MOCK_DEALERS);
+  const [showAddDealerModal, setShowAddDealerModal] = useState(false);
+  const [editingDealerId, setEditingDealerId] = useState(null);
+  const [addDealerName, setAddDealerName] = useState('');
+  const [addDealerCode, setAddDealerCode] = useState('');
+  const [users, setUsers] = useState(MOCK_USERS);
+  const [showUserModal, setShowUserModal] = useState(false);
+  const [editingUserId, setEditingUserId] = useState(null);
+  const [userFormName, setUserFormName] = useState('');
+  const [userFormEmail, setUserFormEmail] = useState('');
+  const [userFormPhone, setUserFormPhone] = useState('');
+  const [userFormRole, setUserFormRole] = useState('dealer');
+  const [userFormDealerId, setUserFormDealerId] = useState('');
+  const [userFormDealerCode, setUserFormDealerCode] = useState('');
+  const [userFormDealerName, setUserFormDealerName] = useState('');
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [selectedReport, setSelectedReport] = useState(null);
@@ -2295,16 +3233,17 @@ const App = () => {
   const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
   const avatarRef = useRef(null);
 
-  const avatarInitials = (MOCK_DEALER_INFO.email || 'OJ').slice(0, 2).toUpperCase();
+  const currentUser = userRole === 'admin' ? MOCK_ADMIN_INFO : { name: MOCK_DEALER_INFO.contactPerson, email: MOCK_DEALER_INFO.email };
+  const avatarInitials = (currentUser.email || 'OJ').slice(0, 2).toUpperCase();
 
   const pendingPlans = plans.filter((p) => p.status === 'Pending');
-  const pendingContent = MOCK_CONTENT_REQUESTS.filter((r) => r.status === 'Pending');
+  const pendingContent = contentRequests.filter((r) => r.status === 'Pending');
   const pendingReports = reports.filter((r) => r.status === 'Pending');
   const totalPending = pendingPlans.length + pendingContent.length + pendingReports.length;
 
-  const notificationPlans = plans.filter((p) => p.status === 'Approved' || p.status === 'Rejected');
-  const notificationContent = MOCK_CONTENT_REQUESTS.filter((r) => r.status === 'Approved' || r.status === 'Rejected');
-  const notificationReports = reports.filter((r) => r.status === 'Approved' || r.status === 'Rejected');
+  const notificationPlans = userRole === 'admin' ? pendingPlans : plans.filter((p) => p.status === 'Approved' || p.status === 'Rejected');
+  const notificationContent = userRole === 'admin' ? pendingContent : contentRequests.filter((r) => r.status === 'Approved' || r.status === 'Rejected');
+  const notificationReports = userRole === 'admin' ? pendingReports : reports.filter((r) => r.status === 'Approved' || r.status === 'Rejected');
 
   const formatDateWithTime = (dateStr, timeStr) => {
     if (!dateStr) return '—';
@@ -2337,6 +3276,20 @@ const App = () => {
     return () => document.removeEventListener('click', handleClickOutside);
   }, [notificationOpen, avatarMenuOpen]);
 
+  const handleLogin = (role) => {
+    const data = { role };
+    setSession(data);
+    sessionStorage.setItem(SESSION_KEY, JSON.stringify(data));
+    setActiveMenu('monthly_plan');
+    setView('listing');
+  };
+
+  const handleLogout = () => {
+    clearSession();
+    setSession(null);
+    setAvatarMenuOpen(false);
+  };
+
   const menuItems = [
     { id: 'monthly_plan', label: 'Monthly Plan', icon: <Calendar size={20} /> },
     { id: 'content', label: 'Content Approval', icon: <ClipboardCheck size={20} /> },
@@ -2344,7 +3297,18 @@ const App = () => {
     { id: 'activity_summary', label: 'Activity Summary', icon: <BarChart3 size={20} /> },
   ];
 
+  const adminMenuItems = [
+    { id: 'user_management', label: 'User management', icon: <User size={20} /> },
+    { id: 'dealer_management', label: 'Dealer Management', icon: <Store size={20} /> },
+  ];
+
+  const allMenuItems = userRole === 'admin' ? [...menuItems, ...adminMenuItems] : menuItems;
+
   const activityList = buildActivityList(plans, reports);
+
+  if (!isLoggedIn) {
+    return <LoginView onLogin={handleLogin} />;
+  }
 
   const handleOpenActivityDetail = (item) => {
     setSelectedActivity(item);
@@ -2411,6 +3375,57 @@ const App = () => {
     setView('content_detail');
   };
 
+  const getTodayDateStr = () => {
+    const d = new Date();
+    return d.toISOString().slice(0, 10);
+  };
+
+  const handleContentApprove = () => {
+    if (!selectedRequest?.id) return;
+    setContentRequests((prev) =>
+      prev.map((r) =>
+        r.id === selectedRequest.id
+          ? {
+              ...r,
+              status: 'Approved',
+              approvalData: {
+                date: getTodayDateStr(),
+                time: '12:00',
+                name: MOCK_ADMIN_INFO.name,
+                email: MOCK_ADMIN_INFO.email,
+                phone: MOCK_ADMIN_INFO.phone,
+              },
+            }
+          : r
+      )
+    );
+    setSelectedRequest(null);
+    setView('listing');
+  };
+
+  const handleContentReject = (reason) => {
+    if (!selectedRequest?.id) return;
+    setContentRequests((prev) =>
+      prev.map((r) =>
+        r.id === selectedRequest.id
+          ? {
+              ...r,
+              status: 'Rejected',
+              rejectReason: reason || '—',
+              rejectData: {
+                date: getTodayDateStr(),
+                name: MOCK_ADMIN_INFO.name,
+                email: MOCK_ADMIN_INFO.email,
+                phone: MOCK_ADMIN_INFO.phone,
+              },
+            }
+          : r
+      )
+    );
+    setSelectedRequest(null);
+    setView('listing');
+  };
+
   const handleOpenPlanDetail = (plan) => {
     setSelectedPlan(plan);
     setView('plan_detail');
@@ -2421,28 +3436,59 @@ const App = () => {
     setView('report_detail');
   };
 
+  const handleReportApprove = () => {
+    if (!selectedReport?.id) return;
+    setReports((prev) =>
+      prev.map((r) =>
+        r.id === selectedReport.id
+          ? {
+              ...r,
+              status: 'Approved',
+              approvalData: {
+                date: getTodayDateStr(),
+                time: '12:00',
+                name: MOCK_ADMIN_INFO.name,
+                email: MOCK_ADMIN_INFO.email,
+                phone: MOCK_ADMIN_INFO.phone,
+              },
+            }
+          : r
+      )
+    );
+    setSelectedReport(null);
+    setView('listing');
+  };
+
   const renderContent = () => {
     if (activeMenu === 'monthly_plan') {
       if (view === 'listing')
         return (
           <MonthlyListingView
-            plans={plans}
+            plans={sortPlansByDateDesc(userRole === 'admin' ? plans.filter((p) => p.status !== 'Draft') : plans)}
             onCreateNew={() => setView('create')}
             onOpenDetail={handleOpenPlanDetail}
+            showDealerColumn={userRole === 'admin'}
           />
         );
       if (view === 'create') return <MonthlyPlanFormView onBack={() => setView('listing')} />;
       if (view === 'plan_detail')
-        return <MonthlyPlanFormView onBack={() => setView('listing')} initialPlan={selectedPlan} />;
+        return (
+          <MonthlyPlanFormView
+            onBack={() => setView('listing')}
+            initialPlan={selectedPlan}
+            isAdmin={userRole === 'admin'}
+          />
+        );
     }
 
     if (activeMenu === 'content') {
       if (view === 'listing')
         return (
           <ContentListingView
-            requests={MOCK_CONTENT_REQUESTS}
+            requests={sortContentByDateDesc(userRole === 'admin' ? contentRequests.filter((r) => r.status !== 'Draft') : contentRequests)}
             onCreateNew={() => setView('create')}
             onOpenDetail={handleOpenContentDetail}
+            showDealerColumn={userRole === 'admin'}
           />
         );
       if (view === 'create')
@@ -2453,6 +3499,9 @@ const App = () => {
             onBack={() => setView('listing')}
             onPreviewImage={setPreviewImage}
             initialReq={selectedRequest}
+            isAdmin={userRole === 'admin'}
+            onApprove={handleContentApprove}
+            onReject={handleContentReject}
           />
         );
     }
@@ -2461,9 +3510,10 @@ const App = () => {
       if (view === 'listing')
         return (
           <ReportClaimListingView
-            reports={reports}
+            reports={sortReportsByDateDesc(userRole === 'admin' ? reports.filter((r) => r.status !== 'Draft') : reports)}
             onCreateNew={() => setView('create')}
             onOpenDetail={handleOpenReportDetail}
+            showDealerColumn={userRole === 'admin'}
           />
         );
       if (view === 'create')
@@ -2481,6 +3531,8 @@ const App = () => {
             onPreviewImage={setPreviewImage}
             plans={plans}
             initialReport={selectedReport}
+            isAdmin={userRole === 'admin'}
+            onApprove={handleReportApprove}
           />
         );
     }
@@ -2489,7 +3541,7 @@ const App = () => {
       if (view === 'listing')
         return (
           <ActionActivityListingView
-            activityList={activityList}
+            activityList={sortActivityListByDateDesc(activityList)}
             onOpenDetail={handleOpenActivityDetail}
           />
         );
@@ -2504,10 +3556,274 @@ const App = () => {
         );
     }
 
+    if (activeMenu === 'user_management') {
+      return (
+        <div className="min-h-[50vh]">
+          <UserManagementView
+            users={users}
+            onAddUser={() => {
+              setEditingUserId(null);
+              setUserFormName('');
+              setUserFormEmail('');
+              setUserFormPhone('');
+              setUserFormRole('dealer');
+              setUserFormDealerId('');
+              setUserFormDealerCode('');
+              setUserFormDealerName('');
+              setShowUserModal(true);
+            }}
+            onEditUser={(u) => {
+              setEditingUserId(u.id);
+              setUserFormName(u.name || '');
+              setUserFormEmail(u.email || '');
+              setUserFormPhone(u.phone || '');
+              setUserFormRole(u.role || 'dealer');
+              const match = dealers.find((d) => d.dealerCode === u.dealerCode);
+              setUserFormDealerId(match ? String(match.id) : '');
+              setUserFormDealerCode(u.dealerCode || '');
+              setUserFormDealerName(u.dealerName || '');
+              setShowUserModal(true);
+            }}
+          />
+          {showUserModal && (
+            <div
+              className="fixed inset-0 bg-black/50 flex items-center justify-center z-[100] p-4"
+              onClick={() => { setShowUserModal(false); setEditingUserId(null); }}
+            >
+              <div
+                className="bg-white rounded-sm shadow-xl border border-slate-200 max-w-md w-full p-6 font-sans font-black"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <h3 className="text-sm font-black uppercase tracking-tight text-slate-800 mb-4">{editingUserId ? 'แก้ไข User' : 'เพิ่ม User'}</h3>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-[11px] font-black uppercase text-slate-500 tracking-tight mb-1">Name</label>
+                    <input
+                      type="text"
+                      value={userFormName}
+                      onChange={(e) => setUserFormName(e.target.value)}
+                      placeholder="ชื่อ-นามสกุล"
+                      className="w-full border-2 border-slate-300 rounded-sm px-3 py-2 text-sm font-bold focus:border-indigo-500 outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-black uppercase text-slate-500 tracking-tight mb-1">Email</label>
+                    <input
+                      type="email"
+                      value={userFormEmail}
+                      onChange={(e) => setUserFormEmail(e.target.value)}
+                      placeholder="email@example.com"
+                      className="w-full border-2 border-slate-300 rounded-sm px-3 py-2 text-sm font-bold focus:border-indigo-500 outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-black uppercase text-slate-500 tracking-tight mb-1">Phone</label>
+                    <input
+                      type="text"
+                      value={userFormPhone}
+                      onChange={(e) => setUserFormPhone(e.target.value)}
+                      placeholder="เบอร์โทรศัพท์"
+                      className="w-full border-2 border-slate-300 rounded-sm px-3 py-2 text-sm font-bold focus:border-indigo-500 outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-black uppercase text-slate-500 tracking-tight mb-1">Role</label>
+                    <select
+                      value={userFormRole}
+                      onChange={(e) => {
+                        setUserFormRole(e.target.value);
+                        if (e.target.value !== 'dealer') {
+                          setUserFormDealerId('');
+                          setUserFormDealerCode('');
+                          setUserFormDealerName('');
+                        }
+                      }}
+                      className="w-full border-2 border-slate-300 rounded-sm px-3 py-2 text-sm font-bold focus:border-indigo-500 outline-none"
+                    >
+                      <option value="admin">Admin</option>
+                      <option value="dealer">Dealer</option>
+                    </select>
+                  </div>
+                  {userFormRole === 'dealer' && (
+                    <div>
+                      <label className="block text-[11px] font-black uppercase text-slate-500 tracking-tight mb-1">Dealer (Code / Name) <span className="text-rose-500">*</span></label>
+                      <select
+                        value={userFormDealerId}
+                        onChange={(e) => {
+                          const id = e.target.value;
+                          setUserFormDealerId(id);
+                          const d = dealers.find((x) => x.id === Number(id));
+                          if (d) {
+                            setUserFormDealerCode(d.dealerCode || '');
+                            setUserFormDealerName(d.dealerName || '');
+                          } else {
+                            setUserFormDealerCode('');
+                            setUserFormDealerName('');
+                          }
+                        }}
+                        className="w-full border-2 border-slate-300 rounded-sm px-3 py-2 text-sm font-bold focus:border-indigo-500 outline-none"
+                      >
+                        <option value="">— เลือก Dealer —</option>
+                        {dealers.map((d) => (
+                          <option key={d.id} value={d.id}>
+                            {d.dealerCode} / {d.dealerName || ''}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+                </div>
+                <div className="flex justify-end gap-2 mt-6">
+                  <button
+                    type="button"
+                    onClick={() => { setShowUserModal(false); setEditingUserId(null); }}
+                    className="px-4 py-2 border border-slate-300 bg-white hover:bg-slate-100 text-slate-600 font-bold text-xs uppercase rounded-sm"
+                  >
+                    ยกเลิก
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const name = userFormName.trim();
+                      const email = userFormEmail.trim();
+                      const phone = userFormPhone.trim();
+                      const role = userFormRole || 'dealer';
+                      const isDealer = role === 'dealer';
+                      const dealerOk = !isDealer || (userFormDealerCode && userFormDealerName);
+                      if (name && email && dealerOk) {
+                        const payload = { name, email, phone, role };
+                        if (isDealer) {
+                          payload.dealerCode = userFormDealerCode;
+                          payload.dealerName = userFormDealerName;
+                        } else {
+                          payload.dealerCode = undefined;
+                          payload.dealerName = undefined;
+                        }
+                        if (editingUserId != null) {
+                          setUsers((prev) =>
+                            prev.map((u) => (u.id === editingUserId ? { ...u, ...payload } : u))
+                          );
+                        } else {
+                          const nextId = Math.max(0, ...users.map((u) => u.id)) + 1;
+                          setUsers((prev) => [...prev, { id: nextId, ...payload }]);
+                        }
+                        setShowUserModal(false);
+                        setEditingUserId(null);
+                        setUserFormName('');
+                        setUserFormEmail('');
+                        setUserFormPhone('');
+                        setUserFormRole('dealer');
+                        setUserFormDealerId('');
+                        setUserFormDealerCode('');
+                        setUserFormDealerName('');
+                      }
+                    }}
+                    className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs uppercase rounded-sm"
+                  >
+                    บันทึก
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    if (activeMenu === 'dealer_management') {
+      return (
+        <div className="min-h-[50vh]">
+          <DealerManagementView
+            dealers={dealers}
+            onAddDealer={() => {
+              setEditingDealerId(null);
+              setAddDealerName('');
+              setAddDealerCode('');
+              setShowAddDealerModal(true);
+            }}
+            onEditDealer={(d) => {
+              setEditingDealerId(d.id);
+              setAddDealerName(d.dealerName || '');
+              setAddDealerCode(d.dealerCode || '');
+              setShowAddDealerModal(true);
+            }}
+          />
+          {showAddDealerModal && (
+            <div
+              className="fixed inset-0 bg-black/50 flex items-center justify-center z-[100] p-4"
+              onClick={() => { setShowAddDealerModal(false); setEditingDealerId(null); }}
+            >
+              <div
+                className="bg-white rounded-sm shadow-xl border border-slate-200 max-w-md w-full p-6 font-sans font-black"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <h3 className="text-sm font-black uppercase tracking-tight text-slate-800 mb-4">{editingDealerId ? 'แก้ไข Dealer' : 'เพิ่ม Dealer'}</h3>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-[11px] font-black uppercase text-slate-500 tracking-tight mb-1">Dealer Name</label>
+                    <input
+                      type="text"
+                      value={addDealerName}
+                      onChange={(e) => setAddDealerName(e.target.value)}
+                      placeholder="ชื่อ dealer"
+                      className="w-full border-2 border-slate-300 rounded-sm px-3 py-2 text-sm font-bold focus:border-indigo-500 outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-black uppercase text-slate-500 tracking-tight mb-1">Dealer Code</label>
+                    <input
+                      type="text"
+                      value={addDealerCode}
+                      onChange={(e) => setAddDealerCode(e.target.value.toUpperCase())}
+                      placeholder="รหัส dealer"
+                      className="w-full border-2 border-slate-300 rounded-sm px-3 py-2 text-sm font-bold focus:border-indigo-500 outline-none uppercase"
+                    />
+                  </div>
+                </div>
+                <div className="flex justify-end gap-2 mt-6">
+                  <button
+                    type="button"
+                    onClick={() => { setShowAddDealerModal(false); setEditingDealerId(null); }}
+                    className="px-4 py-2 border border-slate-300 bg-white hover:bg-slate-100 text-slate-600 font-bold text-xs uppercase rounded-sm"
+                  >
+                    ยกเลิก
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const name = addDealerName.trim();
+                      const code = (addDealerCode || '').trim().toUpperCase();
+                      if (name && code) {
+                        if (editingDealerId != null) {
+                          setDealers((prev) =>
+                            prev.map((d) => (d.id === editingDealerId ? { ...d, dealerName: name, dealerCode: code } : d))
+                          );
+                        } else {
+                          const nextId = Math.max(0, ...dealers.map((d) => d.id)) + 1;
+                          setDealers((prev) => [...prev, { id: nextId, dealerName: name, dealerCode: code }]);
+                        }
+                        setShowAddDealerModal(false);
+                        setEditingDealerId(null);
+                        setAddDealerName('');
+                        setAddDealerCode('');
+                      }
+                    }}
+                    className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs uppercase rounded-sm"
+                  >
+                    บันทึก
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
     return (
       <div className="flex flex-col items-center justify-center h-[60vh] bg-white border border-dashed border-slate-300 rounded-sm font-sans font-black">
         <h2 className="text-xl font-black text-slate-400 uppercase tracking-tight">
-          {menuItems.find((m) => m.id === activeMenu)?.label}
+          {allMenuItems.find((m) => m.id === activeMenu)?.label}
         </h2>
         <p className="text-slate-400 text-sm tracking-tight font-black">ส่วนนี้อยู่ระหว่างการพัฒนา (Placeholder View)</p>
       </div>
@@ -2547,6 +3863,29 @@ const App = () => {
               )}
             </button>
           ))}
+          {userRole === 'admin' && (
+            <>
+              <div className="mx-4 my-2 border-t border-slate-700" aria-hidden="true" />
+              {adminMenuItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    setActiveMenu(item.id);
+                    setView('listing');
+                  }}
+                  className={`w-full flex items-center py-3 transition-colors relative group ${activeMenu === item.id ? 'bg-indigo-600 text-white' : 'hover:bg-slate-800 hover:text-white'} ${item.isSub ? 'pl-8 pr-4' : 'px-4'}`}
+                >
+                  <div className="min-w-[24px] font-black">{item.icon}</div>
+                  {isSidebarOpen && (
+                    <span className="ml-3 font-bold text-xs uppercase tracking-tight truncate font-black">{item.label}</span>
+                  )}
+                  {activeMenu === item.id && (
+                    <div className="absolute right-0 top-0 bottom-0 w-1 bg-white font-black"></div>
+                  )}
+                </button>
+              ))}
+            </>
+          )}
         </nav>
 
         <button
@@ -2561,8 +3900,15 @@ const App = () => {
         <header className="bg-white border-b border-slate-300 min-h-12 flex items-center justify-between px-6 sticky top-0 z-40 shadow-sm font-black">
           <div className="flex items-center gap-2 font-black">
             {!isSidebarOpen && <span className="font-black text-indigo-600 uppercase text-xs font-black">OJ</span>}
+            <span
+              className={`text-[10px] font-black uppercase tracking-tight px-2 py-0.5 rounded-sm border ${
+                userRole === 'admin' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-indigo-50 text-indigo-700 border-indigo-200'
+              }`}
+            >
+              {userRole === 'admin' ? 'Admin' : 'Dealer'}
+            </span>
             <span className="text-xs text-slate-400 font-bold uppercase tracking-tight font-black">
-              {menuItems.find((m) => m.id === activeMenu)?.label}
+              {allMenuItems.find((m) => m.id === activeMenu)?.label}
             </span>
           </div>
           <div className="flex items-center gap-3 font-black">
@@ -2590,7 +3936,7 @@ const App = () => {
               {notificationOpen && (
                 <div className="absolute right-0 top-full mt-1 w-80 max-h-[70vh] overflow-y-auto bg-white border border-slate-200 shadow-lg rounded-sm z-50 font-sans">
                   <div className="p-2 border-b border-slate-100 font-black text-[10px] uppercase text-slate-500 tracking-tight">
-                    การแจ้งเตือน (Approved / Rejected)
+                    {userRole === 'admin' ? 'การแจ้งเตือน (รออนุมัติ)' : 'การแจ้งเตือน (Approved / Rejected)'}
                   </div>
                   <ul className="py-1 text-xs">
                     <li className="border-b border-slate-100">
@@ -2691,7 +4037,7 @@ const App = () => {
               )}
             </div>
             <span className="text-xs text-slate-700 font-bold tracking-tight hidden sm:inline">
-              {MOCK_DEALER_INFO.contactPerson}
+              {currentUser.name}
             </span>
             <div className="relative" ref={avatarRef}>
               <button
@@ -2735,11 +4081,13 @@ const App = () => {
                     <li className="border-t border-slate-100">
                       <button
                         type="button"
-                        onClick={() => setAvatarMenuOpen(false)}
+                        onClick={() => {
+                          handleLogout();
+                        }}
                         className="w-full text-left px-3 py-2.5 hover:bg-slate-50 flex items-center gap-2 text-rose-600 font-bold"
                       >
                         <LogOut size={14} />
-                        Logout
+                        ออกจากระบบ
                       </button>
                     </li>
                   </ul>
