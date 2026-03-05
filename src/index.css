@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  font-family: 'Noto Sans Thai', sans-serif !important;
+}
+
+input,
+select,
+textarea {
+  letter-spacing: normal !important;
+}
+
+.modal-overlay {
+  background-color: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(10px);
+}
