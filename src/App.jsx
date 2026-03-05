@@ -2024,7 +2024,9 @@ const ReportClaimListingView = ({ reports = [], onCreateNew, onOpenDetail, showD
               >
                 {showDealerColumn && (
                   <td className="px-5 py-2.5 font-bold text-slate-700">
-                    {r.dealerCode || ''} / {r.dealerName || '-'}
+                    <span className="font-black text-indigo-600">{r.dealerCode || '—'}</span>
+                    <span className="text-slate-400 mx-1">/</span>
+                    <span className="text-slate-800">{r.dealerName || '—'}</span>
                   </td>
                 )}
                 <td className="px-5 py-2.5 font-black text-indigo-600 tracking-tight">{r.docNo}</td>
@@ -2925,6 +2927,7 @@ const ActionActivityListingView = ({ activityList = [], onOpenDetail }) => {
         <table className="w-full text-left text-sm">
           <thead>
             <tr className="bg-slate-100 border-b border-slate-300 text-[11px]">
+              <th className="px-5 py-2.5 font-black uppercase text-slate-500 min-w-[12rem]">Dealer Code / Name</th>
               <th className="px-5 py-2.5 font-black uppercase text-slate-500">Doc No.</th>
               <th className="px-5 py-2.5 font-black uppercase text-slate-500">เดือน/ปี</th>
               <th className="px-5 py-2.5 font-black uppercase text-slate-500 text-center">สถานะรวม</th>
@@ -2934,7 +2937,7 @@ const ActionActivityListingView = ({ activityList = [], onOpenDetail }) => {
           <tbody className="divide-y divide-slate-200">
             {list.length === 0 ? (
               <tr>
-                <td colSpan={4} className="px-5 py-8 text-center text-slate-400 text-xs font-bold uppercase">
+                <td colSpan={5} className="px-5 py-8 text-center text-slate-400 text-xs font-bold uppercase">
                   ยังไม่มี Report & Claim ที่ส่งแล้วและอ้างอิงแผน — ส่ง Report ที่มี Plan Doc No. ก่อน
                 </td>
               </tr>
@@ -2945,6 +2948,11 @@ const ActionActivityListingView = ({ activityList = [], onOpenDetail }) => {
                   className="hover:bg-slate-50 transition-colors cursor-pointer"
                   onClick={() => onOpenDetail(item)}
                 >
+                  <td className="px-5 py-2.5 font-bold text-slate-700">
+                    <span className="font-black text-indigo-600">{item.plan.dealerCode || '—'}</span>
+                    <span className="text-slate-400 mx-1">/</span>
+                    <span className="text-slate-800">{item.plan.dealerName || '—'}</span>
+                  </td>
                   <td className="px-5 py-2.5 font-black text-indigo-600">{item.plan.docNo}</td>
                   <td className="px-5 py-2.5 font-bold text-slate-700">
                     {item.plan.month} {item.plan.year}
