@@ -44,6 +44,7 @@ import {
   Settings,
   LogOut,
   Download,
+  Car,
 } from 'lucide-react';
 
 // --- Constants & Mock Data ---
@@ -147,6 +148,31 @@ const OFFLINE_OPTIONS = ['Roadshow', 'OJ Club', 'Showroom event', 'Other'];
 
 const VEHICLE_MODELS = ['OMODA C5 EV', 'JAECOO 5 EV', 'JAECOO 6 EV', 'JAECOO 7 PHEV'];
 const MONTHS_TH = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+
+// Monthly plan docNo: [dealerCode][YYYYMM01]v[N], N = 1 for first plan in that month, then +1
+const getPlanDocNoBase = (dealerCode, month, year) => {
+  const monthNum = MONTHS_TH.indexOf(month) + 1;
+  const ceYear = Number(String(year).replace(/\D/g, '')) - 543;
+  const yyyy = String(ceYear).padStart(4, '0');
+  const mm = String(monthNum).padStart(2, '0');
+  return `${(dealerCode || '').trim()}${yyyy}${mm}01`;
+};
+const getNextPlanVersionNumber = (plans, dealerCode, month, year) => {
+  const sameMonth = (plans || []).filter(
+    (p) => p.dealerCode === dealerCode && p.month === month && p.year === year
+  );
+  let maxN = 0;
+  sameMonth.forEach((p) => {
+    const m = (p.docNo || '').match(/v(\d+)$/);
+    if (m) maxN = Math.max(maxN, Number(m[1]));
+  });
+  return maxN + 1;
+};
+const getNextPlanDocNo = (plans, dealerCode, month, year) => {
+  const base = getPlanDocNoBase(dealerCode, month, year);
+  const n = getNextPlanVersionNumber(plans, dealerCode, month, year);
+  return `${base}v${n}`;
+};
 
 const sortPlansByDateDesc = (list) =>
   [...list].sort((a, b) => {
@@ -286,7 +312,7 @@ const MOCK_PLANS = [
   },
   {
     id: 3,
-    docNo: 'AGE20260304v2',
+    docNo: 'AGE20260301v1',
     dealerCode: 'AGE',
     dealerName: 'โอโมดา แอนด์ เจคู เอจีอี ออโต้ แกลเลอรี่ สาขารามคำแหง',
     month: 'มีนาคม',
@@ -312,7 +338,7 @@ const MOCK_PLANS = [
   },
   {
     id: 4,
-    docNo: 'AGE20260401v3',
+    docNo: 'AGE20260401v1',
     dealerCode: 'AGE',
     dealerName: 'โอโมดา แอนด์ เจคู เอจีอี ออโต้ แกลเลอรี่ สาขารามคำแหง',
     month: 'เมษายน',
@@ -335,6 +361,7 @@ const MOCK_PLANS = [
 const MOCK_CONTENT_REQUESTS = [
   {
     id: 101,
+    docNo: 'CTA-AGE20251201v1',
     dealerCode: 'AGE',
     dealerName: 'โอโมดา แอนด์ เจคู เอจีอี ออโต้ แกลเลอรี่ สาขารามคำแหง',
     title: 'สื่อโฆษณา Facebook OMODA C5 EV',
@@ -346,6 +373,7 @@ const MOCK_CONTENT_REQUESTS = [
   },
   {
     id: 102,
+    docNo: 'CTA-AGE20260115v1',
     dealerCode: 'AGE',
     dealerName: 'โอโมดา แอนด์ เจคู เอจีอี ออโต้ แกลเลอรี่ สาขารามคำแหง',
     title: 'ภาพกราฟิกงาน Roadshow',
@@ -364,6 +392,7 @@ const MOCK_CONTENT_REQUESTS = [
   },
   {
     id: 103,
+    docNo: 'CTA-AGE20260201v1',
     dealerCode: 'AGE',
     dealerName: 'โอโมดา แอนด์ เจคู เอจีอี ออโต้ แกลเลอรี่ สาขารามคำแหง',
     title: 'แคมเปญ JAECOO 7 PHEV',
@@ -383,6 +412,7 @@ const MOCK_CONTENT_REQUESTS = [
   },
   {
     id: 104,
+    docNo: 'CTA-AGE20260301v1',
     dealerCode: 'AGE',
     dealerName: 'โอโมดา แอนด์ เจคู เอจีอี ออโต้ แกลเลอรี่ สาขารามคำแหง',
     title: 'ชุดภาพโปรโมท JAECOO 6 (ร่าง)',
@@ -403,7 +433,7 @@ const defaultBookingRow = () => ({ leadsOffline: 0, testDrive: 0, bookingPlus2wd
 const MOCK_REPORT_CLAIMS = [
   {
     id: 200,
-    docNo: 'RPT-AGE-2025-012',
+    docNo: 'RPT-AGE20251201v1',
     dealerCode: 'AGE',
     dealerName: 'โอโมดา แอนด์ เจคู เอจีอี ออโต้ แกลเลอรี่ สาขารามคำแหง',
     planDocNo: 'AGE20251201v1',
@@ -443,7 +473,7 @@ const MOCK_REPORT_CLAIMS = [
   },
   {
     id: 201,
-    docNo: 'RPT-AGE-2026-001',
+    docNo: 'RPT-AGE20260115v1',
     dealerCode: 'AGE',
     dealerName: 'โอโมดา แอนด์ เจคู เอจีอี ออโต้ แกลเลอรี่ สาขารามคำแหง',
     planDocNo: 'AGE20260115v1',
@@ -485,7 +515,7 @@ const MOCK_REPORT_CLAIMS = [
   },
   {
     id: 202,
-    docNo: 'RPT-AGE-2026-002',
+    docNo: 'RPT-AGE20260201v1',
     dealerCode: 'AGE',
     dealerName: 'โอโมดา แอนด์ เจคู เอจีอี ออโต้ แกลเลอรี่ สาขารามคำแหง',
     planDocNo: 'AGE20260201v1',
@@ -520,7 +550,7 @@ const MOCK_REPORT_CLAIMS = [
   },
   {
     id: 203,
-    docNo: 'RPT-AGE-2026-003',
+    docNo: '',
     dealerCode: 'AGE',
     dealerName: 'โอโมดา แอนด์ เจคู เอจีอี ออโต้ แกลเลอรี่ สาขารามคำแหง',
     planDocNo: null,
@@ -882,7 +912,7 @@ const ActivitySectionForm = ({
   );
 };
 
-const MonthlyPlanFormView = ({ onBack, initialPlan = null, isAdmin = false }) => {
+const MonthlyPlanFormView = ({ onBack, initialPlan = null, isAdmin = false, plans = [], dealerCode = '' }) => {
   const isEditMode = !!initialPlan;
   const isApproved = initialPlan?.status === 'Approved';
   const isPending = initialPlan?.status === 'Pending';
@@ -930,7 +960,7 @@ const MonthlyPlanFormView = ({ onBack, initialPlan = null, isAdmin = false }) =>
             <div className="flex items-center gap-2 mt-2 font-sans">
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tight">Document No:</span>
               <span className="bg-indigo-50 border border-indigo-100 px-2 py-0.5 text-[11px] font-black text-indigo-700 rounded-sm">
-                {initialPlan?.docNo || 'NEW-PLAN-REQ'}
+                {initialPlan?.docNo || getNextPlanDocNo(plans, dealerCode, selectedMonth, selectedYear)}
               </span>
               {initialPlan && <StatusBadge status={initialPlan.status} />}
             </div>
@@ -1582,6 +1612,7 @@ const ContentListingView = ({ requests = [], onCreateNew, onOpenDetail, showDeal
               {showDealerColumn && (
                 <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans min-w-[12rem]">Dealer Code / Name</th>
               )}
+              <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans">Doc No.</th>
               <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans">หัวข้อการขออนุมัติ</th>
               <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight text-center font-sans">วันที่ส่ง</th>
               <th className="px-5 py-2.5 font-black text-center text-slate-500 tracking-tight font-sans">จำนวนไฟล์ภาพ</th>
@@ -1603,6 +1634,7 @@ const ContentListingView = ({ requests = [], onCreateNew, onOpenDetail, showDeal
                     <span className="text-slate-800">{req.dealerName || '—'}</span>
                   </td>
                 )}
+                <td className="px-5 py-2.5 font-black text-indigo-600 tracking-tight">{req.docNo || '—'}</td>
                 <td className="px-5 py-2.5 font-bold text-slate-700 tracking-tight">{req.title}</td>
                 <td className="px-5 py-2.5 text-slate-500 text-center">{req.date}</td>
                 <td className="px-5 py-2.5 text-slate-600 text-center font-bold tracking-tight">{req.files?.length ?? 0}</td>
@@ -1977,6 +2009,69 @@ const UserManagementView = ({ users = [], onAddUser, onEditUser }) => {
   );
 };
 
+// --- Model Management (Admin) ---
+const ModelManagementView = ({ vehicleModels = [], onAddModel, onEditModel }) => {
+  const list = Array.isArray(vehicleModels) ? vehicleModels : [];
+  return (
+    <div className="space-y-4 animate-in fade-in duration-300 font-sans font-black">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <div>
+          <h2 className="text-xl font-black text-slate-800 uppercase tracking-tight">Model management</h2>
+          <p className="text-xs font-bold text-slate-500 uppercase mt-0.5">Vehicle management — รายการรุ่นรถ (Model)</p>
+        </div>
+        {onAddModel && (
+          <button
+            type="button"
+            onClick={onAddModel}
+            className="flex items-center justify-center gap-2 bg-slate-900 hover:bg-black text-white px-4 py-2 font-bold text-sm shadow-sm transition-all active:scale-95 rounded-sm"
+          >
+            <Plus size={18} /> เพิ่ม Model
+          </button>
+        )}
+      </div>
+      <div className="bg-white border border-slate-300 overflow-hidden shadow-sm rounded-sm">
+        <table className="w-full text-left text-sm font-sans font-black">
+          <thead>
+            <tr className="bg-slate-100 border-b border-slate-300 text-[11px]">
+              <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight w-24">ลำดับ</th>
+              <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans">Model Name</th>
+              {onEditModel && <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans w-20 text-center">จัดการ</th>}
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-slate-200">
+            {list.length === 0 ? (
+              <tr>
+                <td colSpan={onEditModel ? 3 : 2} className="px-5 py-8 text-center text-slate-400 text-xs font-bold uppercase">
+                  ยังไม่มีรายการ Model
+                </td>
+              </tr>
+            ) : (
+              list.map((name, idx) => (
+                <tr key={`${idx}-${name}`} className="hover:bg-slate-50 transition-colors">
+                  <td className="px-5 py-2.5 font-bold text-slate-500 tabular-nums">{idx + 1}</td>
+                  <td className="px-5 py-2.5 font-bold text-slate-800">{name}</td>
+                  {onEditModel && (
+                    <td className="px-5 py-2.5 text-center">
+                      <button
+                        type="button"
+                        onClick={() => onEditModel(idx)}
+                        className="inline-flex items-center justify-center gap-1 px-2 py-1.5 border border-slate-300 bg-white hover:bg-indigo-50 hover:border-indigo-300 text-slate-600 hover:text-indigo-700 font-bold text-xs rounded-sm transition-colors"
+                        title="แก้ไข"
+                      >
+                        <FileEdit size={14} /> แก้ไข
+                      </button>
+                    </td>
+                  )}
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
 // --- Report & Claim ---
 const ReportClaimListingView = ({ reports = [], onCreateNew, onOpenDetail, showDealerColumn = false }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -2008,7 +2103,9 @@ const ReportClaimListingView = ({ reports = [], onCreateNew, onOpenDetail, showD
                 <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans">Dealer Code / Name</th>
               )}
               <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans">Doc No.</th>
-              <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans">อ้างอิงแผน</th>
+              {showDealerColumn && (
+                <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans">อ้างอิงแผน</th>
+              )}
               <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans">เดือน/ปี</th>
               <th className="px-5 py-2.5 font-black text-center text-slate-500 tracking-tight font-sans">สถานะ</th>
               <th className="px-5 py-2.5 font-black uppercase text-slate-500 tracking-tight font-sans">งบใช้จริง</th>
@@ -2030,7 +2127,9 @@ const ReportClaimListingView = ({ reports = [], onCreateNew, onOpenDetail, showD
                   </td>
                 )}
                 <td className="px-5 py-2.5 font-black text-indigo-600 tracking-tight">{r.docNo}</td>
-                <td className="px-5 py-2.5 font-bold text-slate-700">{r.planDocNo || '-'}</td>
+                {showDealerColumn && (
+                  <td className="px-5 py-2.5 font-bold text-slate-700">{r.planDocNo || '-'}</td>
+                )}
                 <td className="px-5 py-2.5 font-bold text-slate-700">
                   {r.month} {r.year}
                 </td>
@@ -2276,7 +2375,7 @@ const ReportClaimFormView = ({ onBack, onPreviewImage, plans, initialReport = nu
             <div className="flex items-center gap-2 mt-2 font-sans">
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tight">Document No:</span>
               <span className="bg-indigo-50 border border-indigo-100 px-2 py-0.5 text-[11px] font-black text-indigo-700 rounded-sm">
-                {initialReport.docNo}
+                {initialReport.docNo || '—'}
               </span>
               <StatusBadge status={initialReport.status} />
             </div>
@@ -2532,7 +2631,7 @@ const ReportClaimFormView = ({ onBack, onPreviewImage, plans, initialReport = nu
       <section className="bg-white border border-slate-300 overflow-hidden shadow-sm rounded-sm font-sans font-black">
         <div className="bg-indigo-700 px-5 py-2 flex items-center gap-2 text-white font-black font-sans">
           <BarChart3 size={16} />
-          <h3 className="text-[11px] uppercase tracking-tight">Booking Resul</h3>
+          <h3 className="text-[11px] uppercase tracking-tight">Booking Result</h3>
         </div>
         <p className="px-5 pt-2 text-[10px] font-bold text-slate-500 uppercase">Please complete number all the boxes</p>
         <div className="p-5 overflow-x-auto">
@@ -2910,7 +3009,7 @@ const ProgressBar = ({ target, actual, label }) => {
   );
 };
 
-const ActionActivityListingView = ({ activityList = [], onOpenDetail }) => {
+const ActionActivityListingView = ({ activityList = [], onOpenDetail, showDealerColumn = false }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const list = Array.isArray(activityList) ? activityList : [];
   const totalPages = Math.max(1, Math.ceil(list.length / LISTING_PER_PAGE));
@@ -2918,6 +3017,7 @@ const ActionActivityListingView = ({ activityList = [], onOpenDetail }) => {
   const start = (page - 1) * LISTING_PER_PAGE;
   const paginated = list.slice(start, start + LISTING_PER_PAGE);
   const goToPage = (p) => setCurrentPage(Math.max(1, Math.min(p, totalPages)));
+  const colCount = showDealerColumn ? 5 : 4;
 
   return (
     <div className="space-y-4 animate-in fade-in duration-300 font-sans font-black">
@@ -2927,7 +3027,9 @@ const ActionActivityListingView = ({ activityList = [], onOpenDetail }) => {
         <table className="w-full text-left text-sm">
           <thead>
             <tr className="bg-slate-100 border-b border-slate-300 text-[11px]">
-              <th className="px-5 py-2.5 font-black uppercase text-slate-500 min-w-[12rem]">Dealer Code / Name</th>
+              {showDealerColumn && (
+                <th className="px-5 py-2.5 font-black uppercase text-slate-500 min-w-[12rem]">Dealer Code / Name</th>
+              )}
               <th className="px-5 py-2.5 font-black uppercase text-slate-500">Doc No.</th>
               <th className="px-5 py-2.5 font-black uppercase text-slate-500">เดือน/ปี</th>
               <th className="px-5 py-2.5 font-black uppercase text-slate-500 text-center">สถานะรวม</th>
@@ -2937,7 +3039,7 @@ const ActionActivityListingView = ({ activityList = [], onOpenDetail }) => {
           <tbody className="divide-y divide-slate-200">
             {list.length === 0 ? (
               <tr>
-                <td colSpan={5} className="px-5 py-8 text-center text-slate-400 text-xs font-bold uppercase">
+                <td colSpan={colCount} className="px-5 py-8 text-center text-slate-400 text-xs font-bold uppercase">
                   ยังไม่มี Report & Claim ที่ส่งแล้วและอ้างอิงแผน — ส่ง Report ที่มี Plan Doc No. ก่อน
                 </td>
               </tr>
@@ -2948,11 +3050,13 @@ const ActionActivityListingView = ({ activityList = [], onOpenDetail }) => {
                   className="hover:bg-slate-50 transition-colors cursor-pointer"
                   onClick={() => onOpenDetail(item)}
                 >
-                  <td className="px-5 py-2.5 font-bold text-slate-700">
-                    <span className="font-black text-indigo-600">{item.plan.dealerCode || '—'}</span>
-                    <span className="text-slate-400 mx-1">/</span>
-                    <span className="text-slate-800">{item.plan.dealerName || '—'}</span>
-                  </td>
+                  {showDealerColumn && (
+                    <td className="px-5 py-2.5 font-bold text-slate-700">
+                      <span className="font-black text-indigo-600">{item.plan.dealerCode || '—'}</span>
+                      <span className="text-slate-400 mx-1">/</span>
+                      <span className="text-slate-800">{item.plan.dealerName || '—'}</span>
+                    </td>
+                  )}
                   <td className="px-5 py-2.5 font-black text-indigo-600">{item.plan.docNo}</td>
                   <td className="px-5 py-2.5 font-bold text-slate-700">
                     {item.plan.month} {item.plan.year}
@@ -3231,6 +3335,12 @@ const App = () => {
   const [userFormDealerId, setUserFormDealerId] = useState('');
   const [userFormDealerCode, setUserFormDealerCode] = useState('');
   const [userFormDealerName, setUserFormDealerName] = useState('');
+  const [userFormNewPassword, setUserFormNewPassword] = useState('');
+  const [userFormNewPasswordConfirm, setUserFormNewPasswordConfirm] = useState('');
+  const [vehicleModels, setVehicleModels] = useState([...VEHICLE_MODELS]);
+  const [showModelModal, setShowModelModal] = useState(false);
+  const [editingModelIndex, setEditingModelIndex] = useState(null);
+  const [modelFormName, setModelFormName] = useState('');
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [selectedReport, setSelectedReport] = useState(null);
@@ -3308,6 +3418,7 @@ const App = () => {
   const adminMenuItems = [
     { id: 'user_management', label: 'User management', icon: <User size={20} /> },
     { id: 'dealer_management', label: 'Dealer Management', icon: <Store size={20} /> },
+    { id: 'model_management', label: 'Model management', icon: <Car size={20} /> },
   ];
 
   const allMenuItems = userRole === 'admin' ? [...menuItems, ...adminMenuItems] : menuItems;
@@ -3478,7 +3589,14 @@ const App = () => {
             showDealerColumn={userRole === 'admin'}
           />
         );
-      if (view === 'create') return <MonthlyPlanFormView onBack={() => setView('listing')} />;
+      if (view === 'create')
+        return (
+          <MonthlyPlanFormView
+            onBack={() => setView('listing')}
+            plans={plans}
+            dealerCode={MOCK_DEALER_INFO.dealerPrefix || 'AGE'}
+          />
+        );
       if (view === 'plan_detail')
         return (
           <MonthlyPlanFormView
@@ -3551,6 +3669,7 @@ const App = () => {
           <ActionActivityListingView
             activityList={sortActivityListByDateDesc(activityList)}
             onOpenDetail={handleOpenActivityDetail}
+            showDealerColumn={userRole === 'admin'}
           />
         );
       if (view === 'activity_detail')
@@ -3578,6 +3697,8 @@ const App = () => {
               setUserFormDealerId('');
               setUserFormDealerCode('');
               setUserFormDealerName('');
+              setUserFormNewPassword('');
+              setUserFormNewPasswordConfirm('');
               setShowUserModal(true);
             }}
             onEditUser={(u) => {
@@ -3590,6 +3711,8 @@ const App = () => {
               setUserFormDealerId(match ? String(match.id) : '');
               setUserFormDealerCode(u.dealerCode || '');
               setUserFormDealerName(u.dealerName || '');
+              setUserFormNewPassword('');
+              setUserFormNewPasswordConfirm('');
               setShowUserModal(true);
             }}
           />
@@ -3680,6 +3803,40 @@ const App = () => {
                       </select>
                     </div>
                   )}
+                  {editingUserId != null && (
+                    <>
+                      <div className="border-t border-slate-200 pt-4 mt-2">
+                        <p className="text-[11px] font-black uppercase text-slate-500 tracking-tight mb-2 flex items-center gap-1.5">
+                          <Lock size={12} /> เปลี่ยนรหัสผ่าน (ไม่กรอกถ้าไม่ต้องการเปลี่ยน)
+                        </p>
+                        <div className="space-y-3">
+                          <div>
+                            <label className="block text-[10px] font-bold uppercase text-slate-500 tracking-tight mb-1">รหัสผ่านใหม่</label>
+                            <input
+                              type="password"
+                              value={userFormNewPassword}
+                              onChange={(e) => setUserFormNewPassword(e.target.value)}
+                              placeholder="••••••••"
+                              className="w-full border-2 border-slate-300 rounded-sm px-3 py-2 text-sm font-bold focus:border-indigo-500 outline-none"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-[10px] font-bold uppercase text-slate-500 tracking-tight mb-1">ยืนยันรหัสผ่านใหม่</label>
+                            <input
+                              type="password"
+                              value={userFormNewPasswordConfirm}
+                              onChange={(e) => setUserFormNewPasswordConfirm(e.target.value)}
+                              placeholder="••••••••"
+                              className="w-full border-2 border-slate-300 rounded-sm px-3 py-2 text-sm font-bold focus:border-indigo-500 outline-none"
+                            />
+                            {userFormNewPassword && userFormNewPasswordConfirm && userFormNewPassword !== userFormNewPasswordConfirm && (
+                              <p className="text-[10px] font-bold text-rose-600 mt-0.5">รหัสผ่านไม่ตรงกัน</p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
                 <div className="flex justify-end gap-2 mt-6">
                   <button
@@ -3698,33 +3855,38 @@ const App = () => {
                       const role = userFormRole || 'dealer';
                       const isDealer = role === 'dealer';
                       const dealerOk = !isDealer || (userFormDealerCode && userFormDealerName);
-                      if (name && email && dealerOk) {
-                        const payload = { name, email, phone, role };
-                        if (isDealer) {
-                          payload.dealerCode = userFormDealerCode;
-                          payload.dealerName = userFormDealerName;
-                        } else {
-                          payload.dealerCode = undefined;
-                          payload.dealerName = undefined;
-                        }
-                        if (editingUserId != null) {
-                          setUsers((prev) =>
-                            prev.map((u) => (u.id === editingUserId ? { ...u, ...payload } : u))
-                          );
-                        } else {
-                          const nextId = Math.max(0, ...users.map((u) => u.id)) + 1;
-                          setUsers((prev) => [...prev, { id: nextId, ...payload }]);
-                        }
-                        setShowUserModal(false);
-                        setEditingUserId(null);
-                        setUserFormName('');
-                        setUserFormEmail('');
-                        setUserFormPhone('');
-                        setUserFormRole('dealer');
-                        setUserFormDealerId('');
-                        setUserFormDealerCode('');
-                        setUserFormDealerName('');
+                      const wantChangePassword = (userFormNewPassword || '').trim().length > 0;
+                      const passwordMatch = userFormNewPassword === userFormNewPasswordConfirm;
+                      if (!name || !email || !dealerOk) return;
+                      if (editingUserId != null && wantChangePassword && !passwordMatch) return;
+                      const payload = { name, email, phone, role };
+                      if (isDealer) {
+                        payload.dealerCode = userFormDealerCode;
+                        payload.dealerName = userFormDealerName;
+                      } else {
+                        payload.dealerCode = undefined;
+                        payload.dealerName = undefined;
                       }
+                      if (editingUserId != null && wantChangePassword) payload.password = userFormNewPassword.trim();
+                      if (editingUserId != null) {
+                        setUsers((prev) =>
+                          prev.map((u) => (u.id === editingUserId ? { ...u, ...payload } : u))
+                        );
+                      } else {
+                        const nextId = Math.max(0, ...users.map((u) => u.id)) + 1;
+                        setUsers((prev) => [...prev, { id: nextId, ...payload }]);
+                      }
+                      setShowUserModal(false);
+                      setEditingUserId(null);
+                      setUserFormName('');
+                      setUserFormEmail('');
+                      setUserFormPhone('');
+                      setUserFormRole('dealer');
+                      setUserFormDealerId('');
+                      setUserFormDealerCode('');
+                      setUserFormDealerName('');
+                      setUserFormNewPassword('');
+                      setUserFormNewPasswordConfirm('');
                     }}
                     className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs uppercase rounded-sm"
                   >
@@ -3814,6 +3976,83 @@ const App = () => {
                         setEditingDealerId(null);
                         setAddDealerName('');
                         setAddDealerCode('');
+                      }
+                    }}
+                    className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs uppercase rounded-sm"
+                  >
+                    บันทึก
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    if (activeMenu === 'model_management') {
+      return (
+        <div className="min-h-[50vh]">
+          <ModelManagementView
+            vehicleModels={vehicleModels}
+            onAddModel={() => {
+              setEditingModelIndex(null);
+              setModelFormName('');
+              setShowModelModal(true);
+            }}
+            onEditModel={(idx) => {
+              setEditingModelIndex(idx);
+              setModelFormName(vehicleModels[idx] || '');
+              setShowModelModal(true);
+            }}
+          />
+          {showModelModal && (
+            <div
+              className="fixed inset-0 bg-black/50 flex items-center justify-center z-[100] p-4"
+              onClick={() => { setShowModelModal(false); setEditingModelIndex(null); }}
+            >
+              <div
+                className="bg-white rounded-sm shadow-xl border border-slate-200 max-w-md w-full p-6 font-sans font-black"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <h3 className="text-sm font-black uppercase tracking-tight text-slate-800 mb-4">
+                  {editingModelIndex !== null ? 'แก้ไข Model' : 'เพิ่ม Model'}
+                </h3>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-[11px] font-black uppercase text-slate-500 tracking-tight mb-1">Model Name</label>
+                    <input
+                      type="text"
+                      value={modelFormName}
+                      onChange={(e) => setModelFormName(e.target.value)}
+                      placeholder="ชื่อรุ่นรถ"
+                      className="w-full border-2 border-slate-300 rounded-sm px-3 py-2 text-sm font-bold focus:border-indigo-500 outline-none"
+                    />
+                  </div>
+                </div>
+                <div className="flex justify-end gap-2 mt-6">
+                  <button
+                    type="button"
+                    onClick={() => { setShowModelModal(false); setEditingModelIndex(null); }}
+                    className="px-4 py-2 border border-slate-300 bg-white hover:bg-slate-100 text-slate-600 font-bold text-xs uppercase rounded-sm"
+                  >
+                    ยกเลิก
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const name = modelFormName.trim();
+                      if (name) {
+                        if (editingModelIndex !== null) {
+                          setVehicleModels((prev) =>
+                            prev.map((v, i) => (i === editingModelIndex ? name : v))
+                          );
+                        } else {
+                          setVehicleModels((prev) => [...prev, name]);
+                        }
+                        setShowModelModal(false);
+                        setEditingModelIndex(null);
+                        setModelFormName('');
                       }
                     }}
                     className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs uppercase rounded-sm"
